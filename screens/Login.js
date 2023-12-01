@@ -17,6 +17,9 @@ import Button from '../components/Button';
 export default function Login({ navigation }) {
     const [isPasswordShown, setIsPasswordShown] = useState(false);
     const [isChecked, setIsChecked] = useState(false);
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    console.log(email, password);
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
             <View style={{ flex: 1, marginHorizontal: 22 }}>
@@ -69,6 +72,8 @@ export default function Login({ navigation }) {
                             placeholder='Enter your email address'
                             placeholderTextColor={COLORS.black}
                             keyboardType='email-address'
+                            value={email}
+                            onChangeText={(newText) => setEmail(newText)}
                             style={{
                                 width: '100%',
                             }}
@@ -103,6 +108,10 @@ export default function Login({ navigation }) {
                             placeholder='Enter your password'
                             placeholderTextColor={COLORS.black}
                             secureTextEntry={isPasswordShown}
+                            value={password}
+                            onChangeText={(newPassword) =>
+                                setPassword(newPassword)
+                            }
                             style={{
                                 width: '100%',
                             }}

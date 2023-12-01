@@ -20,7 +20,7 @@ export default function Register({ navigation }) {
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
             <View style={{ flex: 1, marginHorizontal: 22 }}>
-                <View style={{ marginVertical: 22 }}>
+                <View style={{ marginVertical: 16 }}>
                     <Text
                         style={{
                             fontSize: 22,
@@ -42,7 +42,7 @@ export default function Register({ navigation }) {
                     </Text>
                 </View>
 
-                <View style={{ marginBottom: 12 }}>
+                <View style={{ marginBottom: 8 }}>
                     <Text
                         style={{
                             fontSize: 16,
@@ -76,7 +76,41 @@ export default function Register({ navigation }) {
                     </View>
                 </View>
 
-                <View style={{ marginBottom: 12 }}>
+                <View style={{ marginBottom: 8 }}>
+                    <Text
+                        style={{
+                            fontSize: 16,
+                            fontWeight: 400,
+                            marginVertical: 8,
+                        }}
+                    >
+                        Email address
+                    </Text>
+
+                    <View
+                        style={{
+                            width: '100%',
+                            height: 48,
+                            borderColor: COLORS.black,
+                            borderWidth: 1,
+                            borderRadius: 8,
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            paddingLeft: 22,
+                        }}
+                    >
+                        <TextInput
+                            placeholder='Enter your email address'
+                            placeholderTextColor={COLORS.black}
+                            keyboardType='email-address'
+                            style={{
+                                width: '100%',
+                            }}
+                        />
+                    </View>
+                </View>
+
+                <View style={{ marginBottom: 8 }}>
                     <Text
                         style={{
                             fontSize: 16,
@@ -123,7 +157,7 @@ export default function Register({ navigation }) {
                     </View>
                 </View>
 
-                <View style={{ marginBottom: 12 }}>
+                <View style={{ marginBottom: 8 }}>
                     <Text
                         style={{
                             fontSize: 16,
@@ -199,7 +233,7 @@ export default function Register({ navigation }) {
                     title='Register'
                     filled
                     style={{
-                        marginTop: 18,
+                        marginTop: 12,
                         marginBottom: 4,
                     }}
                 />
@@ -208,7 +242,7 @@ export default function Register({ navigation }) {
                     style={{
                         flexDirection: 'row',
                         alignItems: 'center',
-                        marginVertical: 20,
+                        marginVertical: 14,
                     }}
                 >
                     <View
@@ -295,7 +329,7 @@ export default function Register({ navigation }) {
                     style={{
                         flexDirection: 'row',
                         justifyContent: 'center',
-                        marginVertical: 22,
+                        marginVertical: 16,
                     }}
                 >
                     <Text style={{ fontSize: 16, color: COLORS.black }}>
