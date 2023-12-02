@@ -164,6 +164,7 @@ export default function Login({ navigation }) {
                         marginTop: 18,
                         marginBottom: 4,
                     }}
+                    onPress={() => navigation.navigate('Home')}
                 />
 
                 <View
