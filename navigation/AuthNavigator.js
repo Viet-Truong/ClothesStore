@@ -1,19 +1,14 @@
-import { StyleSheet } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
+import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import { Login, Register, Welcome, Home } from './screens';
-
-import Cart from './screens/Cart';
-import AuthNavigator from './navigation/AuthNavigator';
-
+import { Login, Register, Welcome } from '../screens';
+import BottomNavigator from '../navigation/BottomNavigator';
 
 const Stack = createNativeStackNavigator();
 
-export default function App() {
+const AuthNavigator = () => {
     return (
-        <NavigationContainer>
-            <Stack.Navigator initialRouteName='Welcome'>
+        <Stack.Navigator initialRouteName='Welcome'>
                 <Stack.Screen
                     name='Welcome'
                     component={Welcome}
@@ -37,30 +32,13 @@ export default function App() {
                 />
                 <Stack.Screen
                     name='Home'
-                    component={Home}
-                    options={{
-                        headerShown: false,
-                    }}
-                />
-
-                 <Stack.Screen
-                    name='Cart'
-                    component={Cart}
+                    component={BottomNavigator}
                     options={{
                         headerShown: false,
                     }}
                 />
             </Stack.Navigator>
-            <AuthNavigator/>
-        </NavigationContainer>
     );
 }
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-});
+export default AuthNavigator;
