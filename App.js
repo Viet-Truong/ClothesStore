@@ -2,9 +2,8 @@ import { StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import { Login, Register, Welcome, Home } from './screens';
+import { Login, Register, Welcome, Home , Cart } from './screens';
 
-import Cart from './screens/Cart';
 import AuthNavigator from './navigation/AuthNavigator';
 
 
@@ -42,7 +41,6 @@ export default function App() {
                         headerShown: false,
                     }}
                 />
-
                  <Stack.Screen
                     name='Cart'
                     component={Cart}
@@ -53,7 +51,7 @@ export default function App() {
             </Stack.Navigator>
             <AuthNavigator/>
         </NavigationContainer>
-    );
+    );s
 }
 
 const styles = StyleSheet.create({
