@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, Image, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
+import EmptyCart from '../assets/EmptyCart.jpg';
 const Cart = () => {
   const [cartItems, setCartItems] = useState([
     {
@@ -111,7 +112,10 @@ const Cart = () => {
       <Text style={[styles.header, { marginTop: 40 }]}>Giỏ hàng</Text>
       {cartItems.length === 0 ? (
         <View style={styles.emptyCart}>
-          <Image source={{ uri: 'https://example.com/images/empty-cart.jpg' }} style={styles.emptyCartImage} />
+          <Image
+            source={require('../assets/EmptyCart.jpg')}
+            style={styles.image}
+          />
           <Text style={styles.emptyCartText}>Không có sản phẩm nào!</Text>
         </View>
       ) : (
