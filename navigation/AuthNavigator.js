@@ -1,7 +1,7 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import { Login, Register, Welcome } from '../screens';
+import { Login, Register, Welcome , Cart } from '../screens';
 import BottomNavigator from '../navigation/BottomNavigator';
 
 const Stack = createNativeStackNavigator();
@@ -33,6 +33,13 @@ const AuthNavigator = () => {
                 <Stack.Screen
                     name='Home'
                     component={BottomNavigator}
+                    options={{
+                        headerShown: false,
+                    }}
+                />
+                <Stack.Screen
+                    name='Cart'
+                    component={Cart}
                     options={{
                         headerShown: false,
                     }}
