@@ -10,7 +10,6 @@ import Notification from '../screens/Notification';
 import Message from '../screens/Message';
 import User from '../screens/User';
 
-
 const Tab = createBottomTabNavigator();
 
 function BottomNavigator() {
@@ -18,7 +17,7 @@ function BottomNavigator() {
     <Tab.Navigator
       screenOptions={{
         headerShown: false,
-        tabBarStyle: styles.tabBarStyle
+        tabBarStyle: styles.tabBarStyle,
       }}
     >
       <Tab.Screen
@@ -27,8 +26,24 @@ function BottomNavigator() {
         options={{
           tabBarShowLabel: false,
           tabBarIcon: ({ focused }) => (
-            <View style={focused ? styles.viewIconActive : styles.viewIconNoneActive}>
-              <Icon name={focused ? 'md-home' : 'md-home-outline'} size={22} color={focused ? COLORS.secondary : COLORS.black} style={{ alignItems: 'center', justifyContent: 'center' }} />
+            <View
+              style={
+                focused
+                  ? styles.viewIconActive
+                  : styles.viewIconNoneActive
+              }
+            >
+              <Icon
+                name={focused ? 'md-home' : 'md-home-outline'}
+                size={22}
+                color={
+                  focused ? COLORS.secondary : COLORS.black
+                }
+                style={{
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              />
             </View>
           ),
         }}
@@ -39,8 +54,28 @@ function BottomNavigator() {
         options={{
           tabBarShowLabel: false,
           tabBarIcon: ({ focused }) => (
-            <View style={focused ? styles.viewIconActive : styles.viewIconNoneActive}>
-              <Icon name={focused ? 'notifications' : 'notifications-outline'} size={22} color={focused ? COLORS.secondary : COLORS.black} style={{ alignItems: 'center', justifyContent: 'center' }} />
+            <View
+              style={
+                focused
+                  ? styles.viewIconActive
+                  : styles.viewIconNoneActive
+              }
+            >
+              <Icon
+                name={
+                  focused
+                    ? 'notifications'
+                    : 'notifications-outline'
+                }
+                size={22}
+                color={
+                  focused ? COLORS.secondary : COLORS.black
+                }
+                style={{
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              />
             </View>
           ),
         }}
@@ -51,8 +86,28 @@ function BottomNavigator() {
         options={{
           tabBarShowLabel: false,
           tabBarIcon: ({ focused }) => (
-            <View style={focused ? styles.viewIconActive : styles.viewIconNoneActive}>
-              <Icon name={focused ? 'chatbubble-ellipses' : 'chatbubble-ellipses-outline'} size={22} color={focused ? COLORS.secondary : COLORS.black} style={{ alignItems: 'center', justifyContent: 'center' }} />
+            <View
+              style={
+                focused
+                  ? styles.viewIconActive
+                  : styles.viewIconNoneActive
+              }
+            >
+              <Icon
+                name={
+                  focused
+                    ? 'chatbubble-ellipses'
+                    : 'chatbubble-ellipses-outline'
+                }
+                size={22}
+                color={
+                  focused ? COLORS.secondary : COLORS.black
+                }
+                style={{
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              />
             </View>
           ),
         }}
@@ -63,13 +118,32 @@ function BottomNavigator() {
         options={{
           tabBarShowLabel: false,
           tabBarIcon: ({ focused }) => (
-            <View style={focused ? styles.viewIconActive : styles.viewIconNoneActive}>
-              <Icon name={focused ? 'person-circle' : 'person-circle-outline'} size={22} color={focused ? COLORS.secondary : COLORS.black} style={{ alignItems: 'center', justifyContent: 'center' }} />
+            <View
+              style={
+                focused
+                  ? styles.viewIconActive
+                  : styles.viewIconNoneActive
+              }
+            >
+              <Icon
+                name={
+                  focused
+                    ? 'person-circle'
+                    : 'person-circle-outline'
+                }
+                size={22}
+                color={
+                  focused ? COLORS.secondary : COLORS.black
+                }
+                style={{
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              />
             </View>
           ),
         }}
       />
-
     </Tab.Navigator>
   );
 }
@@ -78,7 +152,7 @@ const styles = StyleSheet.create({
   tabBarStyle: {
     backgroundColor: COLORS.white,
     borderRadius: 15,
-    height: 50
+    height: 50,
   },
 
   viewIconActive: {
@@ -94,11 +168,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 
-  viewIconNoneActive: {
-
-  }
-
-
+  viewIconNoneActive: {},
 });
 
 export default BottomNavigator;

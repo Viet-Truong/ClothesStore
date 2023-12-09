@@ -1,6 +1,6 @@
 import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
-import { View, Text, TextInput, FlatList, Image } from 'react-native';
+import { View, Text, TextInput, FlatList, Image, Pressable } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import COLORS from '../constants/colors';
@@ -40,11 +40,13 @@ export default function Home({ navigation }) {
                     size={24}
                     color={COLORS.grey} />
                 <Text className="font-bold">Clothes Store</Text>
-                <Ionicons
-                    className="flex-none"
-                    name='cart'
-                    size={24}
-                    color={COLORS.grey} />
+                <Pressable onPress={() => navigation.navigate('Cart')}>
+                    <Ionicons
+                        className="flex-none"
+                        name='cart'
+                        size={24}
+                        color={COLORS.grey} />
+                </Pressable>
             </View>
 
             {/* Search Input */}
@@ -84,7 +86,6 @@ export default function Home({ navigation }) {
                     numColumns={2}
                     renderItem={({ item }) => <ListProduct item={item}></ListProduct>}
                 >
-
                 </FlatList>
             </View>
         </SafeAreaView>
