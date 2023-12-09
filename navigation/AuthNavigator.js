@@ -1,7 +1,14 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import { Login, Register, Welcome } from '../screens';
+import {
+    Login,
+    Register,
+    Welcome,
+    VerifyEmail,
+    SendToken,
+    ChangePassword,
+} from '../screens';
 import BottomNavigator from '../navigation/BottomNavigator';
 
 const Stack = createNativeStackNavigator();
@@ -9,36 +16,57 @@ const Stack = createNativeStackNavigator();
 const AuthNavigator = () => {
     return (
         <Stack.Navigator initialRouteName='Welcome'>
-                <Stack.Screen
-                    name='Welcome'
-                    component={Welcome}
-                    options={{
-                        headerShown: false,
-                    }}
-                />
-                <Stack.Screen
-                    name='Login'
-                    component={Login}
-                    options={{
-                        headerShown: false,
-                    }}
-                />
-                <Stack.Screen
-                    name='Register'
-                    component={Register}
-                    options={{
-                        headerShown: false,
-                    }}
-                />
-                <Stack.Screen
-                    name='Home'
-                    component={BottomNavigator}
-                    options={{
-                        headerShown: false,
-                    }}
-                />
-            </Stack.Navigator>
+            <Stack.Screen
+                name='Welcome'
+                component={Welcome}
+                options={{
+                    headerShown: false,
+                }}
+            />
+            <Stack.Screen
+                name='Login'
+                component={Login}
+                options={{
+                    headerShown: false,
+                }}
+            />
+            <Stack.Screen
+                name='Register'
+                component={Register}
+                options={{
+                    headerShown: false,
+                }}
+            />
+            <Stack.Screen
+                name='Home'
+                component={BottomNavigator}
+                options={{
+                    headerShown: false,
+                }}
+            />
+            <Stack.Screen
+                name='VerifyEmail'
+                component={VerifyEmail}
+                options={{
+                    headerShown: false,
+                }}
+            />
+            <Stack.Screen
+                name='SendToken'
+                component={SendToken}
+                options={{
+                    headerShown: false,
+                }}
+            />
+            <Stack.Screen
+                name='ChangePassword'
+                component={ChangePassword}
+                options={{
+                    headerShown: false,
+                }}
+            />
+        </Stack.Navigator>
     );
-}
+};
 
 export default AuthNavigator;
