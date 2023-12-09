@@ -1,11 +1,15 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { View, Text, Pressable, Image } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
 import Button from '../components/Button';
 import COLORS from '../constants/colors';
+import { AuthContext } from '../context/AuthContext';
 
 export default function Welcome({ navigation }) {
+    const handleWelcome = () => {
+        navigation.navigate('Register');
+    };
     return (
         <LinearGradient
             style={{
@@ -23,7 +27,7 @@ export default function Welcome({ navigation }) {
             >
                 <Button
                     title='Join Now'
-                    onPress={() => navigation.navigate('Register')}
+                    onPress={handleWelcome}
                     style={{
                         marginTop: 22,
                         width: '100%',

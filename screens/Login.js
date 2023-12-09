@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import {
     View,
     Text,
@@ -13,13 +13,23 @@ import Checkbox from 'expo-checkbox';
 
 import COLORS from '../constants/colors';
 import Button from '../components/Button';
+import { AuthContext } from '../context/AuthContext';
 
 export default function Login({ navigation }) {
-    const [isPasswordShown, setIsPasswordShown] = useState(false);
+    const [isPasswordShown, setIsPasswordShown] = useState(true);
     const [isChecked, setIsChecked] = useState(false);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    console.log(email, password);
+    const [error, setError] = useState('');
+    const { auth, login } = useContext(AuthContext);
+
+    const handleLogin = async (e) => {
+        e.preventDefault();
+        await login(email, password);
+        if (auth) {
+            navigation.navigate('Home');
+        }
+    };
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
             <View style={{ flex: 1, marginHorizontal: 22 }}>
@@ -164,6 +174,7 @@ export default function Login({ navigation }) {
                         marginTop: 18,
                         marginBottom: 4,
                     }}
+                    onPress={handleLogin}
                 />
 
                 <View

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import {
     View,
     Text,
@@ -13,10 +13,24 @@ import Checkbox from 'expo-checkbox';
 
 import COLORS from '../constants/colors';
 import Button from '../components/Button';
+import { AuthContext } from '../context/AuthContext';
 
 export default function Register({ navigation }) {
-    const [isPasswordShown, setIsPasswordShown] = useState(false);
+    const [fullname, setFullname] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [phoneNumber, setPhoneNumber] = useState('');
+    const [isPasswordShown, setIsPasswordShown] = useState(true);
     const [isChecked, setIsChecked] = useState(false);
+    const { register } = useContext(AuthContext);
+
+    const handleRegister = async (e) => {
+        e.preventDefault();
+        const res = await register(fullname, email, password);
+        if (res) {
+            navigation.navigate('VerifyEmail');
+        }
+    };
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
             <View style={{ flex: 1, marginHorizontal: 22 }}>
@@ -50,7 +64,7 @@ export default function Register({ navigation }) {
                             marginVertical: 8,
                         }}
                     >
-                        Email address
+                        Họ và tên
                     </Text>
 
                     <View
@@ -66,9 +80,11 @@ export default function Register({ navigation }) {
                         }}
                     >
                         <TextInput
-                            placeholder='Enter your email address'
+                            placeholder='Nhập họ và tên của bạn'
                             placeholderTextColor={COLORS.black}
-                            keyboardType='email-address'
+                            keyboardType='default'
+                            value={fullname}
+                            onChangeText={(newText) => setFullname(newText)}
                             style={{
                                 width: '100%',
                             }}
@@ -84,7 +100,7 @@ export default function Register({ navigation }) {
                             marginVertical: 8,
                         }}
                     >
-                        Email address
+                        Email
                     </Text>
 
                     <View
@@ -100,9 +116,11 @@ export default function Register({ navigation }) {
                         }}
                     >
                         <TextInput
-                            placeholder='Enter your email address'
+                            placeholder='Nhập địa chỉ Email'
                             placeholderTextColor={COLORS.black}
                             keyboardType='email-address'
+                            value={email}
+                            onChangeText={(newText) => setEmail(newText)}
                             style={{
                                 width: '100%',
                             }}
@@ -118,7 +136,7 @@ export default function Register({ navigation }) {
                             marginVertical: 8,
                         }}
                     >
-                        Mobile Number
+                        Số điện thoại
                     </Text>
 
                     <View
@@ -147,9 +165,11 @@ export default function Register({ navigation }) {
                         />
 
                         <TextInput
-                            placeholder='Enter your phone number'
+                            placeholder='Nhập số điện thoại của bạn'
                             placeholderTextColor={COLORS.black}
                             keyboardType='numeric'
+                            value={phoneNumber}
+                            onChangeText={(newText) => setPhoneNumber(newText)}
                             style={{
                                 width: '80%',
                             }}
@@ -165,7 +185,7 @@ export default function Register({ navigation }) {
                             marginVertical: 8,
                         }}
                     >
-                        Password
+                        Mật khẩu
                     </Text>
 
                     <View
@@ -184,6 +204,8 @@ export default function Register({ navigation }) {
                             placeholder='Enter your password'
                             placeholderTextColor={COLORS.black}
                             secureTextEntry={isPasswordShown}
+                            value={password}
+                            onChangeText={(newText) => setPassword(newText)}
                             style={{
                                 width: '100%',
                             }}
@@ -236,6 +258,7 @@ export default function Register({ navigation }) {
                         marginTop: 12,
                         marginBottom: 4,
                     }}
+                    onPress={handleRegister}
                 />
 
                 <View
@@ -333,7 +356,7 @@ export default function Register({ navigation }) {
                     }}
                 >
                     <Text style={{ fontSize: 16, color: COLORS.black }}>
-                        Already have an account?
+                        Bạn đã có tài khoản?
                     </Text>
                     <Pressable onPress={() => navigation.navigate('Login')}>
                         <Text
