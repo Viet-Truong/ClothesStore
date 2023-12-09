@@ -9,7 +9,6 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
-import Checkbox from 'expo-checkbox';
 
 import COLORS from '../constants/colors';
 import Button from '../components/Button';
@@ -38,20 +37,11 @@ export default function Login({ navigation }) {
                         style={{
                             fontSize: 22,
                             fontWeight: 'bold',
-                            marginVertical: 12,
+                            marginTop: 22,
                             color: COLORS.black,
                         }}
                     >
-                        Hi Welcome Back ! 👋
-                    </Text>
-
-                    <Text
-                        style={{
-                            fontSize: 16,
-                            color: COLORS.black,
-                        }}
-                    >
-                        Hello again you have been missed!
+                        Welcome Back ! 👋
                     </Text>
                 </View>
 
@@ -63,7 +53,7 @@ export default function Login({ navigation }) {
                             marginVertical: 8,
                         }}
                     >
-                        Email address
+                        Email
                     </Text>
 
                     <View
@@ -79,7 +69,7 @@ export default function Login({ navigation }) {
                         }}
                     >
                         <TextInput
-                            placeholder='Enter your email address'
+                            placeholder='Nhập địa chỉ email'
                             placeholderTextColor={COLORS.black}
                             keyboardType='email-address'
                             value={email}
@@ -99,7 +89,7 @@ export default function Login({ navigation }) {
                             marginVertical: 8,
                         }}
                     >
-                        Password
+                        Mật khẩu
                     </Text>
 
                     <View
@@ -115,7 +105,7 @@ export default function Login({ navigation }) {
                         }}
                     >
                         <TextInput
-                            placeholder='Enter your password'
+                            placeholder='Nhập mật khẩu'
                             placeholderTextColor={COLORS.black}
                             secureTextEntry={isPasswordShown}
                             value={password}
@@ -151,24 +141,8 @@ export default function Login({ navigation }) {
                     </View>
                 </View>
 
-                <View
-                    style={{
-                        flexDirection: 'row',
-                        marginVertical: 6,
-                    }}
-                >
-                    <Checkbox
-                        style={{ marginRight: 8 }}
-                        value={isChecked}
-                        onValueChange={setIsChecked}
-                        color={isChecked ? COLORS.primary : undefined}
-                    />
-
-                    <Text>Remenber Me</Text>
-                </View>
-
                 <Button
-                    title='Login'
+                    title='Đăng nhập'
                     filled
                     style={{
                         marginTop: 18,
@@ -192,7 +166,7 @@ export default function Login({ navigation }) {
                             marginHorizontal: 10,
                         }}
                     />
-                    <Text style={{ fontSize: 14 }}>Or Login with</Text>
+                    <Text style={{ fontSize: 14 }}>Đăng nhập với</Text>
                     <View
                         style={{
                             flex: 1,
@@ -272,7 +246,7 @@ export default function Login({ navigation }) {
                     }}
                 >
                     <Text style={{ fontSize: 16, color: COLORS.black }}>
-                        Don't have an account ?{' '}
+                        Bạn chưa có tài khoản?
                     </Text>
                     <Pressable onPress={() => navigation.navigate('Register')}>
                         <Text
@@ -283,7 +257,28 @@ export default function Login({ navigation }) {
                                 marginLeft: 3,
                             }}
                         >
-                            Register
+                            Đăng kí
+                        </Text>
+                    </Pressable>
+                </View>
+
+                <View
+                    style={{
+                        flexDirection: 'row',
+                        justifyContent: 'center',
+                        marginVertical: 5,
+                    }}
+                >
+                    <Pressable onPress={() => navigation.navigate('SendToken')}>
+                        <Text
+                            style={{
+                                fontSize: 16,
+                                color: COLORS.primary,
+                                fontWeight: 'bold',
+                                marginLeft: 3,
+                            }}
+                        >
+                            Quên mật khẩu
                         </Text>
                     </Pressable>
                 </View>

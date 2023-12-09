@@ -39,20 +39,11 @@ export default function Register({ navigation }) {
                         style={{
                             fontSize: 22,
                             fontWeight: 'bold',
-                            marginVertical: 12,
+                            marginTop: 22,
                             color: COLORS.black,
                         }}
                     >
-                        Create Account
-                    </Text>
-
-                    <Text
-                        style={{
-                            fontSize: 16,
-                            color: COLORS.black,
-                        }}
-                    >
-                        Connect with your friend today!
+                        Tạo tài khoản ! 👋
                     </Text>
                 </View>
 
@@ -201,7 +192,7 @@ export default function Register({ navigation }) {
                         }}
                     >
                         <TextInput
-                            placeholder='Enter your password'
+                            placeholder='Nhập mật khẩu'
                             placeholderTextColor={COLORS.black}
                             secureTextEntry={isPasswordShown}
                             value={password}
@@ -248,11 +239,11 @@ export default function Register({ navigation }) {
                         color={isChecked ? COLORS.primary : undefined}
                     />
 
-                    <Text>I aggree to the terms and conditions</Text>
+                    <Text>Tôi đồng ý với các điều khoản và chính sách</Text>
                 </View>
 
                 <Button
-                    title='Register'
+                    title='Đăng kí'
                     filled
                     style={{
                         marginTop: 12,
@@ -276,7 +267,7 @@ export default function Register({ navigation }) {
                             marginHorizontal: 10,
                         }}
                     />
-                    <Text style={{ fontSize: 14 }}>Or Register with</Text>
+                    <Text style={{ fontSize: 14 }}>Đăng kí với</Text>
                     <View
                         style={{
                             flex: 1,
@@ -367,7 +358,7 @@ export default function Register({ navigation }) {
                                 marginLeft: 3,
                             }}
                         >
-                            Login
+                            Đăng nhập
                         </Text>
                     </Pressable>
                 </View>

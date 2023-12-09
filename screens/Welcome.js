@@ -1,10 +1,9 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { View, Text, Pressable, Image } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
 import Button from '../components/Button';
 import COLORS from '../constants/colors';
-import { AuthContext } from '../context/AuthContext';
 
 export default function Welcome({ navigation }) {
     const handleWelcome = () => {
@@ -26,7 +25,7 @@ export default function Welcome({ navigation }) {
                 }}
             >
                 <Button
-                    title='Join Now'
+                    title='Bắt đầu'
                     onPress={handleWelcome}
                     style={{
                         marginTop: 22,
@@ -47,7 +46,7 @@ export default function Welcome({ navigation }) {
                             color: COLORS.white,
                         }}
                     >
-                        Already have an account ?
+                        Bạn đã có tài khoản ?
                     </Text>
                     <Pressable onPress={() => navigation.navigate('Login')}>
                         <Text
@@ -58,7 +57,7 @@ export default function Welcome({ navigation }) {
                                 marginLeft: 4,
                             }}
                         >
-                            Login
+                            Đăng nhập
                         </Text>
                     </Pressable>
                 </View>

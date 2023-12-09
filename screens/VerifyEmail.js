@@ -1,15 +1,13 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { View, Text, TextInput } from 'react-native';
 
 import COLORS from '../constants/colors';
 import Button from '../components/Button';
 import * as AuthService from '../api/authService';
-import { AuthContext } from '../context/AuthContext';
 
 export default function VerifyEmail({ navigation }) {
     const [token, setToken] = useState('');
-    const { setAuth } = useContext(AuthContext);
     const handleVerifyEmail = () => {
         const res = AuthService.verifyToken(token);
         if (res.type === 'error') {
