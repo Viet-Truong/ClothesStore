@@ -1,16 +1,7 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import {
-    Login,
-    Register,
-    Welcome,
-    Home,
-    VerifyEmail,
-    ChangePassword,
-    SendToken,
-} from './screens';
 import Chat from './screens/Chat';
-import { Login, Register, Welcome, Home } from './screens';
+import { Login, Register, Welcome, Home, VerifyEmail, SendToken, ChangePassword } from './screens';
 import AuthNavigator from './navigation/AuthNavigator';
 
 const Stack = createNativeStackNavigator();
