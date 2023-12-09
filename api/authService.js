@@ -1,9 +1,23 @@
-import * as request from '~/utils/request';
+import * as request from '../utils/request';
 
-export const login = async ({ username, password }) => {
+export const login = async ({ email, password }) => {
     try {
         const res = await request.post('login', {
-            username,
+            email,
+            password,
+        });
+        console.log(res);
+        return res;
+    } catch (e) {
+        console.log(e);
+    }
+};
+
+export const register = async ({ email, password, fullname }) => {
+    try {
+        const res = await request.post('register', {
+            fullname,
+            email,
             password,
         });
         return res;
@@ -12,12 +26,31 @@ export const login = async ({ username, password }) => {
     }
 };
 
-export const register = async ({ username, password, role = 'Khách hàng' }) => {
+export const verifyToken = async (token) => {
     try {
-        const res = await request.post('addAccount', {
-            username,
+        const res = await request.get(`verify/${token}`);
+        return res;
+    } catch (e) {
+        console.log(e);
+    }
+};
+
+export const sendToken = async (email) => {
+    try {
+        const res = await request.post('reset-password', {
+            email,
+        });
+        return res;
+    } catch (e) {
+        console.log(e);
+    }
+};
+
+export const changePassword = async ({ token, password }) => {
+    try {
+        const res = await request.post(`change-password`, {
             password,
-            role,
+            token,
         });
         return res;
     } catch (e) {
