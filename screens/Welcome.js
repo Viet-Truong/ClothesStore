@@ -6,6 +6,9 @@ import Button from '../components/Button';
 import COLORS from '../constants/colors';
 
 export default function Welcome({ navigation }) {
+    const handleWelcome = () => {
+        navigation.navigate('Register');
+    };
     return (
         <LinearGradient
             style={{
@@ -22,8 +25,8 @@ export default function Welcome({ navigation }) {
                 }}
             >
                 <Button
-                    title='Join Now'
-                    onPress={() => navigation.navigate('Register')}
+                    title='Bắt đầu'
+                    onPress={handleWelcome}
                     style={{
                         marginTop: 22,
                         width: '100%',
@@ -43,7 +46,7 @@ export default function Welcome({ navigation }) {
                             color: COLORS.white,
                         }}
                     >
-                        Already have an account ?
+                        Bạn đã có tài khoản ?
                     </Text>
                     <Pressable onPress={() => navigation.navigate('Login')}>
                         <Text
@@ -54,7 +57,7 @@ export default function Welcome({ navigation }) {
                                 marginLeft: 4,
                             }}
                         >
-                            Login
+                            Đăng nhập
                         </Text>
                     </Pressable>
                 </View>
