@@ -1,7 +1,5 @@
-import { StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-
 import {
     Login,
     Register,
@@ -11,14 +9,15 @@ import {
     ChangePassword,
     SendToken,
 } from './screens';
-import { AuthProvider } from './context/AuthContext';
 import Chat from './screens/Chat';
+import { Login, Register, Welcome, Home } from './screens';
+import AuthNavigator from './navigation/AuthNavigator';
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
     return (
-        <AuthProvider>
+        <>
             <NavigationContainer>
                 <Stack.Navigator initialRouteName='Welcome'>
                     <Stack.Screen
@@ -79,6 +78,9 @@ export default function App() {
                     />
                 </Stack.Navigator>
             </NavigationContainer>
-        </AuthProvider>
+            <NavigationContainer>
+                <AuthNavigator />
+            </NavigationContainer>
+        </>
     );
 }
