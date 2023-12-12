@@ -2,7 +2,7 @@ import * as request from '../utils/request';
 
 export const showProducts = async () => {
     try {
-        const products = await request.get('product'); // Gọi API endpoint để lấy danh sách sản phẩm
+        const products = await request.get('products'); // Gọi API endpoint để lấy danh sách sản phẩm
 
         console.log(products); // Log dữ liệu sản phẩm nhận được từ API
 
@@ -40,15 +40,15 @@ export const showProductDetail = async (productId) => {
     }
 };
 
-// export const showProductsByCategoryId = async (categoryId) => {
-//     try {
-//         const products = await request.get(`products/${categoryId}`); // Gọi API endpoint để lấy danh sách sản phẩm dựa trên category ID
+export const showProductsByCategoryId = async (categoryId) => {
+    try {
+        const products = await request.get(`products/${categoryId}`); // Gọi API endpoint để lấy danh sách sản phẩm dựa trên category ID
 
-//         console.log(products); // Log dữ liệu sản phẩm nhận được từ API
+        console.log(products); // Log dữ liệu sản phẩm nhận được từ API
 
-//         return products; // Trả về dữ liệu sản phẩm
-//     } catch (error) {
-//         console.error(error);
-//         return null; // Trả về null hoặc xử lý lỗi theo yêu cầu của bạn
-//     }
-//};
+        return products; // Trả về dữ liệu sản phẩm
+    } catch (error) {
+        console.error(error);
+        return null; // Trả về null hoặc xử lý lỗi theo yêu cầu của bạn
+    }
+};

@@ -82,25 +82,46 @@ const styles = StyleSheet.create({
 export default function Home({ navigation }) {
     const [products, setProducts] = useState([]);
     const [categories, setCategories] = useState([]);
+    const [currentCategoryId, setCurrentCategoryId] = useState(null); // Thêm state để lưu ID danh mục hiện tại
+
 
     useEffect(() => {
-        async function fetchData() {
-            // Lấy danh sách sản phẩm từ API
-            const productsData = await showProducts();
-            if (productsData) {
-                setProducts(productsData);
-            }
+        fetchData(); // Gọi hàm fetchData để lấy danh sách sản phẩm và danh mục khi component được mount
 
-            // Lấy danh sách danh mục từ API
-            const categoriesData = await showCategories();
-            if (categoriesData) {
-                setCategories(categoriesData);
-            }
-        }
-
-        fetchData();
+        // Cleanup function for when the component unmounts
+        return () => {
+            // Perform cleanup here if necessary
+        };
     }, []);
 
+    const fetchData = async () => {
+        // Lấy danh sách sản phẩm từ API
+        const productsData = await showProducts();
+        if (productsData) {
+            setProducts(productsData);
+        }
+
+        // Lấy danh sách danh mục từ API
+        const categoriesData = await showCategories();
+        if (categoriesData) {
+            setCategories(categoriesData);
+        }
+    };
+
+    const handleCategoryPress = async (categoryId) => {
+        // Nếu đã click vào danh mục trước đó, lấy sản phẩm theo danh mục
+        if (categoryId !== currentCategoryId) {
+            const productsByCategory = await showProductsByCategoryId(categoryId);
+            if (productsByCategory) {
+                setProducts(productsByCategory);
+                setCurrentCategoryId(categoryId); // Cập nhật ID danh mục hiện tại
+            }
+        } else {
+            // Nếu click lại vào cùng một danh mục, hiển thị tất cả sản phẩm
+            fetchData();
+            setCurrentCategoryId(null); // Đặt ID danh mục hiện tại về null để hiển thị tất cả sản phẩm
+        }
+    };
 
     const renderProductItem = ({ item }) => (
         <View style={styles.productItemContainer}>
@@ -145,13 +166,22 @@ export default function Home({ navigation }) {
                     showsHorizontalScrollIndicator={false}
                     data={categories}
                     keyExtractor={(item) => item.id.toString()}
-                    renderItem={renderCategoryItem}
+                    renderItem={({ item }) => (
+                        <TouchableOpacity onPress={() => handleCategoryPress(item.id)}>
+                            <View style={styles.categoryItem}>
+                                <Image source={{ uri: item.img }} style={styles.categoryImage} />
+                                <Text style={styles.categoryText}>{item.name}</Text>
+                            </View>
+                        </TouchableOpacity>
+                    )}
                 />
             </View>
 
             {/* Products */}
             <View style={{ flex: 1 }}>
-                <Text style={[styles.sectionTitle, { textAlign: 'center' }]}>Products</Text>
+                <Text style={[styles.sectionTitle, { textAlign: 'center' }]}>
+                    {currentCategoryId ? 'Filtered Products' : 'All Products'}
+                </Text>
                 <FlatList
                     style={[{ textAlign: 'center ' }]}
                     data={products.data}
