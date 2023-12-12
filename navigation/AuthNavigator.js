@@ -1,6 +1,5 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-
 import {
     Login,
     Register,
@@ -8,7 +7,8 @@ import {
     VerifyEmail,
     SendToken,
     ChangePassword,
-    Cart
+    Cart,
+    ProductDetail
 } from '../screens';
 import BottomNavigator from '../navigation/BottomNavigator';
 
@@ -69,6 +69,13 @@ const AuthNavigator = () => {
             <Stack.Screen
                 name='Cart'
                 component={Cart}
+                options={{
+                    headerShown: false,
+                }}
+            />
+            <Stack.Screen
+                name='ProductDetail'
+                component={ProductDetail}
                 options={{
                     headerShown: false,
                 }}

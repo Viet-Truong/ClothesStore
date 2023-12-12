@@ -16,17 +16,17 @@ import Button from '../components/Button';
 import { AuthContext } from '../context/AuthContext';
 
 export default function Register({ navigation }) {
-    const [fullname, setFullname] = useState('');
+    const [name, setname] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [phoneNumber, setPhoneNumber] = useState('');
+    const [phone_number, setphone_number] = useState('');
     const [isPasswordShown, setIsPasswordShown] = useState(true);
     const [isChecked, setIsChecked] = useState(false);
     const { register } = useContext(AuthContext);
 
     const handleRegister = async (e) => {
         e.preventDefault();
-        const res = await register(fullname, email, password);
+        const res = await register(name, email, phone_number, password);
         if (res) {
             navigation.navigate('VerifyEmail');
         }
@@ -74,8 +74,8 @@ export default function Register({ navigation }) {
                             placeholder='Nhập họ và tên của bạn'
                             placeholderTextColor={COLORS.black}
                             keyboardType='default'
-                            value={fullname}
-                            onChangeText={(newText) => setFullname(newText)}
+                            value={name}
+                            onChangeText={(newText) => setname(newText)}
                             style={{
                                 width: '100%',
                             }}
@@ -159,8 +159,8 @@ export default function Register({ navigation }) {
                             placeholder='Nhập số điện thoại của bạn'
                             placeholderTextColor={COLORS.black}
                             keyboardType='numeric'
-                            value={phoneNumber}
-                            onChangeText={(newText) => setPhoneNumber(newText)}
+                            value={phone_number}
+                            onChangeText={(newText) => setphone_number(newText)}
                             style={{
                                 width: '80%',
                             }}

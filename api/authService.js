@@ -13,12 +13,13 @@ export const login = async ({ email, password }) => {
     }
 };
 
-export const register = async ({ email, password, fullname }) => {
+export const register = async ({ email, password, name, phone_number }) => {
     try {
         const res = await request.post('register', {
-            fullname,
+            name,
             email,
             password,
+            phone_number
         });
         return res;
     } catch (e) {

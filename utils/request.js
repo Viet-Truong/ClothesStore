@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const request = axios.create({
-    baseURL: 'http://192.168.2.3:8000/api/',
+    baseURL: 'http://192.168.2.3/api/',
 });
 
 export const get = async (path, options = {}) => {
@@ -27,3 +27,4 @@ axios.interceptors.request.use((request) => {
     console.log('Starting Request', JSON.stringify(request, null, 2));
     return request;
 });
+
