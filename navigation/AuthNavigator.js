@@ -8,6 +8,7 @@ import {
     VerifyEmail,
     SendToken,
     ChangePassword,
+    Cart
 } from '../screens';
 import BottomNavigator from '../navigation/BottomNavigator';
 
@@ -61,6 +62,13 @@ const AuthNavigator = () => {
             <Stack.Screen
                 name='ChangePassword'
                 component={ChangePassword}
+                options={{
+                    headerShown: false,
+                }}
+            />
+            <Stack.Screen
+                name='Cart'
+                component={Cart}
                 options={{
                     headerShown: false,
                 }}

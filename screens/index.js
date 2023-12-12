@@ -2,10 +2,10 @@ import Login from './Login';
 import Welcome from './Welcome';
 import Register from './Register';
 import Home from './Home';
+import Cart from './Cart';
 import VerifyEmail from './VerifyEmail';
 import SendToken from './SendToken';
 import ChangePassword from './ChangePassword';
-
 export {
     Login,
     Welcome,
@@ -14,4 +14,6 @@ export {
     VerifyEmail,
     SendToken,
     ChangePassword,
+    Cart
 };
+
