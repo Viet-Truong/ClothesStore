@@ -34,7 +34,7 @@ export default function Register({ navigation }) {
     const handleRegister = async (e) => {
         e.preventDefault();
         const res = await register(
-            fullname,
+            name,
             email,
             password,
             phone_number,
@@ -88,8 +88,8 @@ export default function Register({ navigation }) {
                                 placeholder='Nhập họ và tên của bạn'
                                 placeholderTextColor={COLORS.black}
                                 keyboardType='default'
-                                value={fullname}
-                                onChangeText={(newText) => setFullname(newText)}
+                                value={name}
+                                onChangeText={(newText) => setname(newText)}
                                 style={{
                                     width: '100%',
                                 }}
@@ -173,7 +173,7 @@ export default function Register({ navigation }) {
                                 placeholder='Nhập số điện thoại của bạn'
                                 placeholderTextColor={COLORS.black}
                                 keyboardType='numeric'
-                                value={phoneNumber}
+                                value={phone_number}
                                 onChangeText={(newText) =>
                                     setPhoneNumber(newText)
                                 }

@@ -1,5 +1,6 @@
 import { Box, FormControl, Input, ScrollView, VStack, Button } from "native-base";
 import React, { useState, useEffect, useContext } from "react";
+import { useNavigation } from '@react-navigation/native';
 import { AuthContext } from "../../context/AuthContext";
 import bcrypt from "bcryptjs";
 import Colors from "../../color";
@@ -40,9 +41,16 @@ const Inputs = [
 ]
 
 const Profile = () => {
+
+    const navigation = useNavigation();
+    const { logout } = useContext(AuthContext);
     const { auth } = useContext(AuthContext);
     const [isEditing, setIsEditing] = useState({ ...auth }); // Trạng thái chỉnh sửa
     const [currentUser, setCurrentUser] = useState({ ...auth }); // Lưu trữ thông tin người dùng hiện tại
+    const handleLogout = () => {
+        logout();
+        navigation.navigate('Login');
+    }
     useEffect(() => {
         if (!isEditing) {
             // Nếu không ở chế độ chỉnh sửa, cập nhật thông tin người dùng hiện tại từ auth
@@ -94,9 +102,14 @@ const Profile = () => {
                             />
                         </FormControl>
                     ))}
-                    <Button onPress={handleEditClick}>
-                        {isEditing ? 'Save' : 'Edit'}
-                    </Button>
+                    <Button
+                        title='Log out'
+                        filled
+                        onPress={() => handleLogout()} style={{
+                            marginTop: 18, marginBottom: 4,
+                        }}
+
+                    > Đăng xuất</Button>
                 </VStack>
             </ScrollView>
         </Box>

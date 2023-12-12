@@ -1,5 +1,5 @@
 import { Ionicons } from '@expo/vector-icons';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     View,
     Text,
@@ -7,10 +7,11 @@ import {
     FlatList,
     Image,
     Pressable,
+    StyleSheet,
+    TouchableOpacity
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Ionicons } from '@expo/vector-icons';
-import { showProducts, showCategories, showProductDetail, showProductsByCategoryId } from '../api/productsService'; // Import hàm lấy dữ liệu từ service
+import { showProducts, showCategories, showProductsByCategoryId } from '../api/productsService'; // Import hàm lấy dữ liệu từ service
 
 // Định nghĩa CSS
 const styles = StyleSheet.create({
@@ -81,7 +82,6 @@ const styles = StyleSheet.create({
 export default function Home({ navigation }) {
     const [products, setProducts] = useState([]);
     const [categories, setCategories] = useState([]);
-    const [selectedCategoryId, setSelectedCategoryId] = useState(null);
 
     useEffect(() => {
         async function fetchData() {
@@ -101,27 +101,6 @@ export default function Home({ navigation }) {
         fetchData();
     }, []);
 
-    const handleCategoryPress = async (categoryId) => {
-        try {
-            if (categoryId === selectedCategoryId) {
-                // Nếu đã chọn category đang được hiển thị, sẽ hiển thị tất cả sản phẩm
-                const allProductsData = await showProducts();
-                if (allProductsData) {
-                    setProducts(allProductsData);
-                }
-                setSelectedCategoryId(null); // Đặt lại selectedCategoryId về null
-            } else {
-                const categoryProductsData = await showProductsByCategoryId(categoryId);
-                if (categoryProductsData) {
-                    setProducts(categoryProductsData);
-                }
-                setSelectedCategoryId(categoryId); // Cập nhật selectedCategoryId với ID category được chọn
-            }
-        } catch (error) {
-            console.error(error);
-            // Xử lý lỗi nếu cần
-        }
-    };
 
     const renderProductItem = ({ item }) => (
         <View style={styles.productItemContainer}>
@@ -136,13 +115,10 @@ export default function Home({ navigation }) {
 
     const renderCategoryItem = ({ item }) => (
         <View style={styles.CategoryItemContainer}>
-            <TouchableOpacity onPress={() => handleCategoryPress(item.id)}>
-                {/* Hiển thị thông tin của danh mục */}
-                <View style={styles.categoryItem}>
-                    <Image source={{ uri: item.img }} style={styles.categoryImage} />
-                    <Text>{item.name}</Text>
-                </View>
-            </TouchableOpacity>
+            <View style={styles.categoryItem}>
+                <Image source={{ uri: item.img }} style={styles.categoryImage} />
+                <Text>{item.name}</Text>
+            </View>
         </View>
     );
 
@@ -178,7 +154,7 @@ export default function Home({ navigation }) {
                 <Text style={[styles.sectionTitle, { textAlign: 'center' }]}>Products</Text>
                 <FlatList
                     style={[{ textAlign: 'center ' }]}
-                    data={products} // Hiển thị tất cả sản phẩm nếu selectedCategoryId là null, ngược lại hiển thị sản phẩm theo category được chọn
+                    data={products.data}
                     keyExtractor={(item) => item.id.toString()}
                     numColumns={2}
                     renderItem={renderProductItem}

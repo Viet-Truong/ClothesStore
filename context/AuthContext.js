@@ -35,12 +35,12 @@ export const AuthProvider = ({ children }) => {
         return false;
     };
 
-    const register = async (fullname, email, password, phoneNumber, role) => {
+    const register = async (name, email, password, phone_number, role) => {
         const res = await AuthService.register({
             email,
             password,
-            fullname,
-            phone_Number,
+            name,
+            phone_number,
             role,
         });
         if (res.type === 'success') {

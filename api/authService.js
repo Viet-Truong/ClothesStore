@@ -16,8 +16,8 @@ export const login = async ({ email, password }) => {
 export const register = async ({
     email,
     password,
-    fullname,
-    phone_Number,
+    name,
+    phone_number,
     role,
 }) => {
     try {
@@ -25,7 +25,7 @@ export const register = async ({
             name,
             email,
             password,
-            phone_Number,
+            phone_number,
             role,
         });
         return res;
