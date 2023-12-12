@@ -1,5 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, FlatList, Image, TouchableOpacity, TextInput, StyleSheet } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import React from 'react';
+import {
+    View,
+    Text,
+    TextInput,
+    FlatList,
+    Image,
+    Pressable,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { showProducts, showCategories, showProductDetail, showProductsByCategoryId } from '../api/productsService'; // Import hàm lấy dữ liệu từ service
