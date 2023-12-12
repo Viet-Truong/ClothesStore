@@ -22,10 +22,10 @@ import { AuthContext } from '../context/AuthContext';
 const ROLE = ['Người mua hàng', 'Người bán hàng'];
 
 export default function Register({ navigation }) {
-    const [fullname, setFullname] = useState('');
+    const [name, setname] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [phoneNumber, setPhoneNumber] = useState('');
+    const [phone_number, setPhoneNumber] = useState('');
     const [role, setRole] = useState(ROLE[0]);
     const [isPasswordShown, setIsPasswordShown] = useState(true);
     const [isChecked, setIsChecked] = useState(false);
@@ -34,10 +34,10 @@ export default function Register({ navigation }) {
     const handleRegister = async (e) => {
         e.preventDefault();
         const res = await register(
-            fullname,
+            name,
             email,
             password,
-            phoneNumber,
+            phone_number,
             role
         );
         if (res) {
@@ -88,8 +88,8 @@ export default function Register({ navigation }) {
                                 placeholder='Nhập họ và tên của bạn'
                                 placeholderTextColor={COLORS.black}
                                 keyboardType='default'
-                                value={fullname}
-                                onChangeText={(newText) => setFullname(newText)}
+                                value={name}
+                                onChangeText={(newText) => setname(newText)}
                                 style={{
                                     width: '100%',
                                 }}
@@ -173,7 +173,7 @@ export default function Register({ navigation }) {
                                 placeholder='Nhập số điện thoại của bạn'
                                 placeholderTextColor={COLORS.black}
                                 keyboardType='numeric'
-                                value={phoneNumber}
+                                value={phone_number}
                                 onChangeText={(newText) =>
                                     setPhoneNumber(newText)
                                 }
@@ -440,7 +440,7 @@ export default function Register({ navigation }) {
                     </View>
                 </View>
             </ScrollView>
-        </SafeAreaView>
+        </SafeAreaView >
     );
 }
 

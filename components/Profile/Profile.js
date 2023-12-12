@@ -1,29 +1,17 @@
 import { Box, FormControl, Input, ScrollView, VStack, Button } from "native-base";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { useNavigation } from '@react-navigation/native';
+import { AuthContext } from "../../context/AuthContext";
+import bcrypt from "bcryptjs";
 import Colors from "../../color";
 
 
-const initialUser = {
-    user_id: 1,
-    first_name: 'John',
-    last_name: 'Doe',
-    phone_number: '1234567890',
-    email: 'john@example.com',
-    dob: '1990-01-01',
-    address: '123 Main St, City',
-    password: 'password123',
-};
 const Inputs = [
     {
-        label: "FIRSTNAME",
+        label: "HỌ VÀ TÊN ",
         type: "text",
-        dataKey: "first_name",
+        dataKey: "fullname",
 
-    },
-    {
-        label: "LASTNAME",
-        type: "text",
-        dataKey: "last_name",
     },
     {
         label: "PHONE",
@@ -53,15 +41,22 @@ const Inputs = [
 ]
 
 const Profile = () => {
-    const [isEditing, setIsEditing] = useState(false); // Trạng thái chỉnh sửa
-    const [currentUser, setCurrentUser] = useState({ ...initialUser }); // Lưu trữ thông tin người dùng hiện tại
 
+    const navigation = useNavigation();
+    const { logout } = useContext(AuthContext);
+    const { auth } = useContext(AuthContext);
+    const [isEditing, setIsEditing] = useState({ ...auth }); // Trạng thái chỉnh sửa
+    const [currentUser, setCurrentUser] = useState({ ...auth }); // Lưu trữ thông tin người dùng hiện tại
+    const handleLogout = () => {
+        logout();
+        navigation.navigate('Login');
+    }
     useEffect(() => {
         if (!isEditing) {
-            // Nếu không ở chế độ chỉnh sửa, cập nhật thông tin người dùng hiện tại từ initialUser
-            setCurrentUser({ ...initialUser });
+            // Nếu không ở chế độ chỉnh sửa, cập nhật thông tin người dùng hiện tại từ auth
+            setCurrentUser({ ...auth.data });
         }
-    }, [isEditing]);
+    }, [auth]);
 
     const handleEditClick = () => {
         setIsEditing(!isEditing); // Chuyển đổi giữa chế độ chỉ đọc và chế độ chỉnh sửa
@@ -101,15 +96,20 @@ const Profile = () => {
                                     bg: Colors.subGreen,
                                     borderWidth: 1,
                                 }}
-                                value={isEditing ? currentUser[input.dataKey] : initialUser[input.dataKey]}
+                                value={isEditing[input.dataKey] ? currentUser[input.dataKey] : auth.data[input.dataKey]}
                                 onChange={(e) => handleInputChange(input.dataKey, e.nativeEvent.text)}
                                 readOnly={!isEditing}
                             />
                         </FormControl>
                     ))}
-                    <Button onPress={handleEditClick}>
-                        {isEditing ? 'Save' : 'Edit'}
-                    </Button>
+                    <Button
+                        title='Log out'
+                        filled
+                        onPress={() => handleLogout()} style={{
+                            marginTop: 18, marginBottom: 4,
+                        }}
+
+                    > Đăng xuất</Button>
                 </VStack>
             </ScrollView>
         </Box>

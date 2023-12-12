@@ -1,5 +1,5 @@
 import { Ionicons } from '@expo/vector-icons';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     View,
     Text,
@@ -7,101 +7,159 @@ import {
     FlatList,
     Image,
     Pressable,
+    StyleSheet,
+    TouchableOpacity
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { showProducts, showCategories, showProductsByCategoryId } from '../api/productsService'; // Import hàm lấy dữ liệu từ service
 
-import COLORS from '../constants/colors';
-import ListProduct from '../components/ListProduct';
-import HorizontalList from '../components/HorizontalList';
-
-const categories = [
-    {
-        name: 'Clothes',
-        url: 'https://i.pinimg.com/564x/39/f1/d1/39f1d10fc835b70a6f41fbcce9cf15c4.jpg',
+// Định nghĩa CSS
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: '#fff',
     },
-    {
-        name: 'Shoes',
-        url: 'https://i.pinimg.com/564x/aa/52/fa/aa52fa6188b8a19f66b58a0ea96423d3.jpg',
+    header: {
+        height: 60,
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        alignItems: 'center',
     },
-    {
-        name: 'Bags',
-        url: 'https://i.pinimg.com/564x/af/6a/2d/af6a2d205fbb58a0b49dd7558096cbcb.jpg',
+    searchContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        margin: 10,
+        borderWidth: 2,
+        borderColor: '#ddd',
+        borderRadius: 20,
+        backgroundColor: '#fff',
+        paddingHorizontal: 10,
     },
-    {
-        name: 'Hats',
-        url: 'https://i.pinimg.com/736x/08/5d/fc/085dfcde105e9a3acf8450c98eefe85c.jpg',
+    productItemContainer: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        margin: 10,
     },
-    {
-        name: 'Pants',
-        url: 'https://i.pinimg.com/736x/00/5d/bb/005dbba9862fbc7d69d322de0907d23e.jpg',
+    categoryItemContainer: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        margin: 10,
     },
-];
+    categoryItem: {
+        margin: 10,
+    },
+    categoryImage: {
+        width: 140,
+        height: 140,
+        borderRadius: 75,
+    },
+    categoryText: {
+        marginTop: 10,
+        textAlign: 'center'
+    },
+    productItem: {
+        margin: 10,
+    },
+    productImage: {
+        width: 150,
+        height: 200,
+        borderRadius: 10,
+    },
+    productTitle: {
+        marginTop: 5,
+        textAlign: 'center',
+    },
+    sectionTitle: {
+        marginLeft: 10,
+        fontSize: 20,
+        fontWeight: 'bold',
+        marginTop: 10,
+    },
+});
 
 export default function Home({ navigation }) {
+    const [products, setProducts] = useState([]);
+    const [categories, setCategories] = useState([]);
+
+    useEffect(() => {
+        async function fetchData() {
+            // Lấy danh sách sản phẩm từ API
+            const productsData = await showProducts();
+            if (productsData) {
+                setProducts(productsData);
+            }
+
+            // Lấy danh sách danh mục từ API
+            const categoriesData = await showCategories();
+            if (categoriesData) {
+                setCategories(categoriesData);
+            }
+        }
+
+        fetchData();
+    }, []);
+
+
+    const renderProductItem = ({ item }) => (
+        <View style={styles.productItemContainer}>
+            <TouchableOpacity onPress={() => navigation.navigate('ProductDetail', { productId: item.id })}>
+                <View style={styles.productItem}>
+                    <Image source={{ uri: item.img }} style={styles.productImage} />
+                    <Text style={styles.productTitle}>{item.name}</Text>
+                </View>
+            </TouchableOpacity>
+        </View>
+    );
+
+    const renderCategoryItem = ({ item }) => (
+        <View style={styles.CategoryItemContainer}>
+            <View style={styles.categoryItem}>
+                <Image source={{ uri: item.img }} style={styles.categoryImage} />
+                <Text>{item.name}</Text>
+            </View>
+        </View>
+    );
+
     return (
-        <SafeAreaView className='bg-white h-full'>
-            <View className='h-16 flex justify-around items-center flex-row'>
-                <Ionicons
-                    className='flex-none'
-                    name='menu'
-                    size={24}
-                    color={COLORS.grey}
-                />
-                <Text className='font-bold'>Clothes Store</Text>
-                <Pressable onPress={() => navigation.navigate('Cart')}>
-                    <Ionicons
-                        className='flex-none'
-                        name='cart'
-                        size={24}
-                        color={COLORS.grey}
-                    />
-                </Pressable>
+        <SafeAreaView style={styles.container}>
+            <View style={styles.header}>
+                <Ionicons name='menu' size={24} color='#888' />
+                <Text style={{ fontWeight: 'bold' }}>Clothes Store</Text>
+                <TouchableOpacity onPress={() => navigation.navigate('Cart')}>
+                    <Ionicons name='cart' size={24} color='#888' />
+                </TouchableOpacity>
             </View>
 
             {/* Search Input */}
-            <View className='flex items-center mx-auto my-2 flex-row border-gray-50 border w-5/6 bg-white rounded-3xl px-3'>
-                <Ionicons
-                    className='ml-2'
-                    name='search'
-                    size={24}
-                    color={COLORS.grey}
-                />
-                <TextInput
-                    placeholder='Search Products'
-                    className='flex-auto mx-auto rounded-md p-3 '
-                />
+            <View style={styles.searchContainer}>
+                <Ionicons name='search' size={24} color='#888' />
+                <TextInput placeholder="Search Products" style={{ flex: 1, marginLeft: 5 }} />
             </View>
 
             {/* Categories */}
-
-            <View className='h-auto w-full my-2'>
+            <View style={{ height: 150, marginTop: 10 }}>
                 <FlatList
                     horizontal
                     showsHorizontalScrollIndicator={false}
                     data={categories}
-                    keyExtractor={(item) => item.name}
-                    renderItem={({ item }) => (
-                        <HorizontalList item={item}></HorizontalList>
-                    )}
-                ></FlatList>
+                    keyExtractor={(item) => item.id.toString()}
+                    renderItem={renderCategoryItem}
+                />
             </View>
 
             {/* Products */}
-            <View className='w-full h-full flex-1 '>
-                <Text className='font-bold ml-6 text-xl my-2'>
-                    New Products
-                </Text>
-
+            <View style={{ flex: 1 }}>
+                <Text style={[styles.sectionTitle, { textAlign: 'center' }]}>Products</Text>
                 <FlatList
-                    className='grow'
-                    data={categories}
-                    keyExtractor={(item) => item.name}
+                    style={[{ textAlign: 'center ' }]}
+                    data={products.data}
+                    keyExtractor={(item) => item.id.toString()}
                     numColumns={2}
-                    renderItem={({ item }) => (
-                        <ListProduct item={item}></ListProduct>
-                    )}
-                ></FlatList>
+                    renderItem={renderProductItem}
+                />
             </View>
-        </SafeAreaView>
+        </SafeAreaView >
     );
 }
