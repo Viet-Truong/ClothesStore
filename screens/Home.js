@@ -2,6 +2,7 @@ import { View, Text, TextInput, FlatList, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import COLORS from '../constants/colors';
+import { Ionicons } from '@expo/vector-icons';
 import ListProduct from '../components/ListProduct';
 import HorizontalList from '../components/HorizontalList';
 

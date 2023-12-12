@@ -22,12 +22,15 @@ export default function Login({ navigation }) {
     const [error, setError] = useState('');
     const { auth, login } = useContext(AuthContext);
 
-    const handleLogin = async (e) => {
-        e.preventDefault();
-        await login(email, password);
+    useEffect(() => {
         if (auth) {
             navigation.navigate('Home');
         }
+    }, [auth]);
+
+    const handleLogin = async (e) => {
+        e.preventDefault();
+        await login(email, password);
     };
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
