@@ -32,7 +32,6 @@ export default function Welcome({ navigation }) {
                         width: '100%',
                     }}
                 />
-
                 <View
                     style={{
                         flexDirection: 'row',
