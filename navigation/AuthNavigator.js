@@ -8,7 +8,8 @@ import {
     SendToken,
     ChangePassword,
     Cart,
-    ProductDetail
+    ProductDetail,
+    AddProduct,
 } from '../screens';
 import BottomNavigator from '../navigation/BottomNavigator';
 
@@ -16,10 +17,17 @@ const Stack = createNativeStackNavigator();
 
 const AuthNavigator = () => {
     return (
-        <Stack.Navigator initialRouteName='Welcome'>
+        <Stack.Navigator initialRouteName='AddProduct'>
             <Stack.Screen
                 name='Welcome'
                 component={Welcome}
+                options={{
+                    headerShown: false,
+                }}
+            />
+            <Stack.Screen
+                name='AddProduct'
+                component={AddProduct}
                 options={{
                     headerShown: false,
                 }}

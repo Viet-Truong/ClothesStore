@@ -1,57 +1,58 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import {
     View,
     Text,
     Image,
-    Pressable,
     TextInput,
-    TouchableOpacity,
     StyleSheet,
     ScrollView,
 } from 'react-native';
 import SelectDropdown from 'react-native-select-dropdown';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Ionicons } from '@expo/vector-icons';
+import Icon from 'react-native-vector-icons/Ionicons';
 import { Entypo } from '@expo/vector-icons';
-import Checkbox from 'expo-checkbox';
 
 import COLORS from '../constants/colors';
 import Button from '../components/Button';
-import { AuthContext } from '../context/AuthContext';
 
-const ROLE = ['Người mua hàng', 'Người bán hàng'];
-
-export default function Register({ navigation }) {
+export default function AddProduct() {
     const [name, setname] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [phone_number, setPhoneNumber] = useState('');
-    const [role, setRole] = useState(ROLE[0]);
-    const [isPasswordShown, setIsPasswordShown] = useState(true);
-    const [isChecked, setIsChecked] = useState(false);
-    const { register } = useContext(AuthContext);
+    const [price, setPrice] = useState('');
+    const [quantity, setQuantity] = useState('');
+    const [description, setDescription] = useState('');
+    const [size, setSize] = useState('');
+    const [color, setColor] = useState('');
+    const [category, setCategory] = useState('');
 
-    const handleRegister = async (e) => {
-        e.preventDefault();
-        const res = await register(name, email, password, phone_number, role);
-        if (res) {
-            navigation.navigate('VerifyEmail');
-        }
-    };
+    const handleAddProduct = () => {};
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
             <ScrollView>
                 <View style={{ flex: 1, marginHorizontal: 22 }}>
-                    <View style={{ marginVertical: 16 }}>
+                    <View
+                        style={{
+                            marginVertical: 16,
+                            display: 'flex',
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                        }}
+                    >
+                        <Icon
+                            name={'add-circle-outline'}
+                            size={22}
+                            color={COLORS.black}
+                            style={{
+                                marginRight: 6,
+                            }}
+                        />
                         <Text
                             style={{
                                 fontSize: 22,
                                 fontWeight: 'bold',
-                                marginTop: 8,
                                 color: COLORS.black,
                             }}
                         >
-                            Tạo tài khoản ! 👋
+                            Thêm sản phẩm
                         </Text>
                     </View>
 
@@ -63,7 +64,7 @@ export default function Register({ navigation }) {
                                 marginVertical: 8,
                             }}
                         >
-                            Họ và tên
+                            Tên sản phẩm
                         </Text>
 
                         <View
@@ -79,7 +80,7 @@ export default function Register({ navigation }) {
                             }}
                         >
                             <TextInput
-                                placeholder='Nhập họ và tên của bạn'
+                                placeholder='VD: Quần jeans'
                                 placeholderTextColor={COLORS.black}
                                 keyboardType='default'
                                 value={name}
@@ -99,7 +100,7 @@ export default function Register({ navigation }) {
                                 marginVertical: 8,
                             }}
                         >
-                            Email
+                            Giá
                         </Text>
 
                         <View
@@ -115,11 +116,11 @@ export default function Register({ navigation }) {
                             }}
                         >
                             <TextInput
-                                placeholder='Nhập địa chỉ Email'
+                                placeholder='VD: 200000'
                                 placeholderTextColor={COLORS.black}
-                                keyboardType='email-address'
-                                value={email}
-                                onChangeText={(newText) => setEmail(newText)}
+                                keyboardType='numeric'
+                                value={price}
+                                onChangeText={(newText) => setPrice(newText)}
                                 style={{
                                     width: '100%',
                                 }}
@@ -135,7 +136,43 @@ export default function Register({ navigation }) {
                                 marginVertical: 8,
                             }}
                         >
-                            Số điện thoại
+                            Số lượng
+                        </Text>
+
+                        <View
+                            style={{
+                                width: '100%',
+                                height: 48,
+                                borderColor: COLORS.black,
+                                borderWidth: 1,
+                                borderRadius: 8,
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                paddingLeft: 22,
+                            }}
+                        >
+                            <TextInput
+                                placeholder='VD: 20'
+                                placeholderTextColor={COLORS.black}
+                                keyboardType='numeric'
+                                value={quantity}
+                                onChangeText={(newText) => setQuantity(newText)}
+                                style={{
+                                    width: '100%',
+                                }}
+                            />
+                        </View>
+                    </View>
+
+                    <View style={{ marginBottom: 4 }}>
+                        <Text
+                            style={{
+                                fontSize: 16,
+                                fontWeight: 400,
+                                marginVertical: 8,
+                            }}
+                        >
+                            Mô tả
                         </Text>
 
                         <View
@@ -152,27 +189,15 @@ export default function Register({ navigation }) {
                             }}
                         >
                             <TextInput
-                                placeholder='+84'
+                                placeholder='VD: Quần Jean Nam Ống Rộng, Trơn, ...'
                                 placeholderTextColor={COLORS.black}
-                                keyboardType='numeric'
-                                style={{
-                                    width: '16%',
-                                    borderRightWidth: 1,
-                                    borderLeftColor: COLORS.grey,
-                                    height: '100%',
-                                }}
-                            />
-
-                            <TextInput
-                                placeholder='Nhập số điện thoại của bạn'
-                                placeholderTextColor={COLORS.black}
-                                keyboardType='numeric'
-                                value={phone_number}
+                                keyboardType='default'
+                                value={description}
                                 onChangeText={(newText) =>
-                                    setPhoneNumber(newText)
+                                    setDescription(newText)
                                 }
                                 style={{
-                                    width: '80%',
+                                    width: '100%',
                                 }}
                             />
                         </View>
@@ -186,7 +211,7 @@ export default function Register({ navigation }) {
                                 marginVertical: 8,
                             }}
                         >
-                            Mật khẩu
+                            Kích cỡ
                         </Text>
 
                         <View
@@ -197,44 +222,21 @@ export default function Register({ navigation }) {
                                 borderWidth: 1,
                                 borderRadius: 8,
                                 alignItems: 'center',
-                                justifyContent: 'center',
+                                flexDirection: 'row',
+                                justifyContent: 'space-between',
                                 paddingLeft: 22,
                             }}
                         >
                             <TextInput
-                                placeholder='Nhập mật khẩu'
+                                placeholder='VD: S, M, L, ...'
                                 placeholderTextColor={COLORS.black}
-                                secureTextEntry={isPasswordShown}
-                                value={password}
-                                onChangeText={(newText) => setPassword(newText)}
+                                keyboardType='default'
+                                value={size}
+                                onChangeText={(newText) => setSize(newText)}
                                 style={{
                                     width: '100%',
                                 }}
                             />
-
-                            <TouchableOpacity
-                                onPress={() =>
-                                    setIsPasswordShown(!isPasswordShown)
-                                }
-                                style={{
-                                    position: 'absolute',
-                                    right: 12,
-                                }}
-                            >
-                                {isPasswordShown == true ? (
-                                    <Ionicons
-                                        name='eye-off'
-                                        size={24}
-                                        color={COLORS.black}
-                                    />
-                                ) : (
-                                    <Ionicons
-                                        name='eye'
-                                        size={24}
-                                        color={COLORS.black}
-                                    />
-                                )}
-                            </TouchableOpacity>
                         </View>
                     </View>
 
@@ -246,7 +248,44 @@ export default function Register({ navigation }) {
                                 marginVertical: 8,
                             }}
                         >
-                            Mục đích
+                            Màu sắc
+                        </Text>
+
+                        <View
+                            style={{
+                                width: '100%',
+                                height: 48,
+                                borderColor: COLORS.black,
+                                borderWidth: 1,
+                                borderRadius: 8,
+                                alignItems: 'center',
+                                flexDirection: 'row',
+                                justifyContent: 'space-between',
+                                paddingLeft: 22,
+                            }}
+                        >
+                            <TextInput
+                                placeholder='VD: Xanh, đen, ...'
+                                placeholderTextColor={COLORS.black}
+                                keyboardType='default'
+                                value={color}
+                                onChangeText={(newText) => setColor(newText)}
+                                style={{
+                                    width: '100%',
+                                }}
+                            />
+                        </View>
+                    </View>
+
+                    <View style={{ marginBottom: 4 }}>
+                        <Text
+                            style={{
+                                fontSize: 16,
+                                fontWeight: 400,
+                                marginVertical: 8,
+                            }}
+                        >
+                            Danh mục
                         </Text>
                         <View
                             style={{
@@ -255,10 +294,10 @@ export default function Register({ navigation }) {
                             }}
                         >
                             <SelectDropdown
-                                data={ROLE}
-                                defaultButtonText={'Mục đích'}
+                                data={['Quần', 'Áo thun', 'Áo khoác']}
+                                defaultButtonText={'Danh mục'}
                                 onSelect={(selectedItem, index) => {
-                                    setRole(selectedItem);
+                                    setCategory(selectedItem);
                                 }}
                                 buttonTextAfterSelection={(
                                     selectedItem,
@@ -296,142 +335,14 @@ export default function Register({ navigation }) {
                         </View>
                     </View>
 
-                    <View
-                        style={{
-                            flexDirection: 'row',
-                            marginVertical: 6,
-                        }}
-                    >
-                        <Checkbox
-                            style={{ marginRight: 8 }}
-                            value={isChecked}
-                            onValueChange={setIsChecked}
-                            color={isChecked ? COLORS.primary : undefined}
-                        />
-
-                        <Text>Tôi đồng ý với các điều khoản và chính sách</Text>
-                    </View>
-
                     <Button
-                        title='Đăng kí'
+                        title='Thêm sản phẩm'
                         filled
                         style={{
-                            marginTop: 12,
-                            marginBottom: 4,
-                        }}
-                        onPress={handleRegister}
-                    />
-
-                    <View
-                        style={{
-                            flexDirection: 'row',
-                            alignItems: 'center',
-                            marginVertical: 14,
-                        }}
-                    >
-                        <View
-                            style={{
-                                flex: 1,
-                                height: 1,
-                                backgroundColor: COLORS.grey,
-                                marginHorizontal: 10,
-                            }}
-                        />
-                        <Text style={{ fontSize: 14 }}>Đăng kí với</Text>
-                        <View
-                            style={{
-                                flex: 1,
-                                height: 1,
-                                backgroundColor: COLORS.grey,
-                                marginHorizontal: 10,
-                            }}
-                        />
-                    </View>
-
-                    <View
-                        style={{
-                            flexDirection: 'row',
-                            justifyContent: 'center',
-                        }}
-                    >
-                        <TouchableOpacity
-                            onPress={() => console.log('Pressed')}
-                            style={{
-                                flex: 1,
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                flexDirection: 'row',
-                                height: 52,
-                                borderWidth: 1,
-                                borderColor: COLORS.grey,
-                                marginRight: 4,
-                                borderRadius: 10,
-                            }}
-                        >
-                            <Image
-                                source={require('../assets/facebook.png')}
-                                style={{
-                                    height: 24,
-                                    width: 24,
-                                    marginRight: 8,
-                                }}
-                                resizeMode='contain'
-                            />
-
-                            <Text>Facebook</Text>
-                        </TouchableOpacity>
-
-                        <TouchableOpacity
-                            onPress={() => console.log('Pressed')}
-                            style={{
-                                flex: 1,
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                flexDirection: 'row',
-                                height: 52,
-                                borderWidth: 1,
-                                borderColor: COLORS.grey,
-                                marginRight: 4,
-                                borderRadius: 10,
-                            }}
-                        >
-                            <Image
-                                source={require('../assets/google.png')}
-                                style={{
-                                    height: 24,
-                                    width: 24,
-                                    marginRight: 8,
-                                }}
-                                resizeMode='contain'
-                            />
-
-                            <Text>Google</Text>
-                        </TouchableOpacity>
-                    </View>
-
-                    <View
-                        style={{
-                            flexDirection: 'row',
-                            justifyContent: 'center',
                             marginVertical: 24,
                         }}
-                    >
-                        <Text style={{ fontSize: 16, color: COLORS.black }}>
-                            Bạn đã có tài khoản?
-                        </Text>
-                        <Pressable onPress={() => navigation.navigate('Login')}>
-                            <Text
-                                style={{
-                                    fontSize: 16,
-                                    color: COLORS.primary,
-                                    fontWeight: 'bold',
-                                    marginLeft: 3,
-                                }}
-                            >
-                                Đăng nhập
-                            </Text>
-                        </Pressable>
-                    </View>
+                        onPress={handleAddProduct}
+                    />
                 </View>
             </ScrollView>
         </SafeAreaView>

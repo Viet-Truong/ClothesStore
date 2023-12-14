@@ -7,6 +7,7 @@ import VerifyEmail from './VerifyEmail';
 import SendToken from './SendToken';
 import ChangePassword from './ChangePassword';
 import ProductDetail from './ProductDetail';
+import AddProduct from './AddProduct';
 export {
     Login,
     Welcome,
@@ -16,6 +17,6 @@ export {
     SendToken,
     ChangePassword,
     Cart,
-    ProductDetail
+    ProductDetail,
+    AddProduct,
 };
-
