@@ -16,16 +16,16 @@ export const login = async ({ email, password }) => {
 export const register = async ({
     email,
     password,
-    fullname,
-    phoneNumber,
+    name,
+    phone_number,
     role,
 }) => {
     try {
         const res = await request.post('register', {
-            fullname,
+            name,
             email,
             password,
-            phoneNumber,
+            phone_number,
             role,
         });
         return res;
