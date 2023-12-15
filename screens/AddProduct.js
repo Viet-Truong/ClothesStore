@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     View,
     Text,
@@ -6,15 +6,28 @@ import {
     TextInput,
     StyleSheet,
     ScrollView,
+    FlatList,
 } from 'react-native';
 import SelectDropdown from 'react-native-select-dropdown';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { Entypo } from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
+import * as ImagePicker from 'expo-image-picker';
+import * as FileSystem from 'expo-file-system';
 
 import COLORS from '../constants/colors';
 import Button from '../components/Button';
 
+const imgDir = FileSystem.documentDirectory + 'images/';
+
+const ensureDirExists = async () => {
+    const dirInfo = await FileSystem.getInfoAsync(imgDir);
+    if (!dirInfo.exists) {
+        await FileSystem.makeDirectoryAsync(imgDir, { intermediates: true });
+    }
+};
 export default function AddProduct() {
     const [name, setname] = useState('');
     const [price, setPrice] = useState('');
@@ -23,6 +36,83 @@ export default function AddProduct() {
     const [size, setSize] = useState('');
     const [color, setColor] = useState('');
     const [category, setCategory] = useState('');
+    const [images, setImages] = useState([]);
+
+    useEffect(() => {
+        loadImages();
+    }, []);
+
+    // Load images from file system
+    const loadImages = async () => {
+        await ensureDirExists();
+        const files = await FileSystem.readDirectoryAsync(imgDir);
+        if (files.length > 0) {
+            setImages(files.map((f) => imgDir + f));
+        }
+    };
+
+    // Select image from library or camera
+    const selectImage = async (useLibrary) => {
+        let result;
+        const options = {
+            mediaTypes: ImagePicker.MediaTypeOptions.All,
+            allowsEditing: true,
+            aspect: [4, 3],
+            quality: 0.75,
+        };
+
+        if (useLibrary) {
+            result = await ImagePicker.launchImageLibraryAsync(options);
+        } else {
+            await ImagePicker.requestCameraPermissionsAsync();
+            result = await ImagePicker.launchCameraAsync(options);
+        }
+        // Save image if not cancelled
+        if (!result.canceled) {
+            saveImage(result.assets[0].uri);
+        }
+    };
+
+    // Delete image from file system
+    const deleteImage = async (uri) => {
+        await FileSystem.deleteAsync(uri);
+        setImages(images.filter((i) => i !== uri));
+    };
+
+    // Save image to file system
+    const saveImage = async (uri) => {
+        await ensureDirExists();
+        const filename = new Date().getTime() + '.jpeg';
+        const dest = imgDir + filename;
+        await FileSystem.copyAsync({ from: uri, to: dest });
+        setImages([...images, dest]);
+    };
+
+    // Render image list item
+    const renderItem = ({ item }) => {
+        const filename = item.split('/').pop();
+        return (
+            <View
+                style={{
+                    flexDirection: 'row',
+                    marginVertical: 4,
+                    alignItems: 'center',
+                    gap: 5,
+                }}
+            >
+                <Image
+                    style={{ width: 80, height: 80 }}
+                    source={{ uri: item }}
+                />
+                <Text style={{ flex: 1 }}>{filename}</Text>
+                <Ionicons
+                    name='trash'
+                    size={24}
+                    onPress={() => deleteImage(item)}
+                />
+            </View>
+        );
+    };
 
     const handleAddProduct = () => {};
     return (
@@ -333,6 +423,57 @@ export default function AddProduct() {
                                 rowTextStyle={styles.dropdown1RowTxtStyle}
                             />
                         </View>
+                    </View>
+
+                    <View style={{ marginBottom: 4 }}>
+                        <Text
+                            style={{
+                                fontSize: 16,
+                                fontWeight: 400,
+                                marginVertical: 8,
+                            }}
+                        >
+                            Thêm hình ảnh
+                        </Text>
+                        <View
+                            style={{
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                                marginVertical: 6,
+                            }}
+                        >
+                            <AntDesign
+                                name='addfile'
+                                size={26}
+                                color='black'
+                                style={{ marginRight: 12 }}
+                                onPress={() => selectImage(true)}
+                            />
+                            <AntDesign
+                                name='camera'
+                                size={32}
+                                color='black'
+                                onPress={() => selectImage(false)}
+                            />
+                        </View>
+                    </View>
+
+                    <View>
+                        <Text
+                            style={{
+                                textAlign: 'center',
+                                fontSize: 20,
+                                fontWeight: '500',
+                                marginVertical: 20,
+                            }}
+                        >
+                            Danh sách hình ảnh
+                        </Text>
+                        <FlatList
+                            data={images}
+                            renderItem={renderItem}
+                            showsHorizontalScrollIndicator={false}
+                        />
                     </View>
 
                     <Button
