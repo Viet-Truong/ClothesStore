@@ -9,13 +9,14 @@ import Home from '../screens/Home';
 import Notification from '../screens/Notification';
 import Message from '../screens/Message';
 import User from '../screens/User';
-import { AddProduct } from '../screens';
+import { AddProduct, Category } from '../screens';
 import { AuthContext } from '../context/AuthContext';
 
 const Tab = createBottomTabNavigator();
 
 function BottomNavigator() {
     const { auth } = useContext(AuthContext);
+    const role = auth.role;
     return (
         <Tab.Navigator
             screenOptions={{
@@ -51,42 +52,76 @@ function BottomNavigator() {
                     ),
                 }}
             />
-            {/* {auth.role === 'Nguời bán hàng' ? ( */}
-            <Tab.Screen
-                name='AddProduct'
-                component={AddProduct}
-                options={{
-                    tabBarShowLabel: false,
-                    tabBarIcon: ({ focused }) => (
-                        <View
-                            style={
-                                focused
-                                    ? styles.viewIconActive
-                                    : styles.viewIconNoneActive
-                            }
-                        >
-                            <Icon
-                                name={
-                                    focused
-                                        ? 'add-outline'
-                                        : 'add-circle-outline'
-                                }
-                                size={22}
-                                color={
-                                    focused ? COLORS.secondary : COLORS.black
-                                }
-                                style={{
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                }}
-                            />
-                        </View>
-                    ),
-                }}
-            />
-            {/* ) : (
-                ''
-            )} */}
+            {role === 'Nguời bán hàng' ? (
+                <>
+                    <Tab.Screen
+                        name='AddProduct'
+                        component={AddProduct}
+                        options={{
+                            tabBarShowLabel: false,
+                            tabBarIcon: ({ focused }) => (
+                                <View
+                                    style={
+                                        focused
+                                            ? styles.viewIconActive
+                                            : styles.viewIconNoneActive
+                                    }
+                                >
+                                    <Icon
+                                        name={
+                                            focused
+                                                ? 'add-outline'
+                                                : 'add-circle-outline'
+                                        }
+                                        size={22}
+                                        color={
+                                            focused
+                                                ? COLORS.secondary
+                                                : COLORS.black
+                                        }
+                                        style={{
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                        }}
+                                    />
+                                </View>
+                            ),
+                        }}
+                    />
+                    <Tab.Screen
+                        name='Category'
+                        component={Category}
+                        options={{
+                            tabBarShowLabel: false,
+                            tabBarIcon: ({ focused }) => (
+                                <View
+                                    style={
+                                        focused
+                                            ? styles.viewIconActive
+                                            : styles.viewIconNoneActive
+                                    }
+                                >
+                                    <Icon
+                                        name={focused ? 'list' : 'list-box'}
+                                        size={22}
+                                        color={
+                                            focused
+                                                ? COLORS.secondary
+                                                : COLORS.black
+                                        }
+                                        style={{
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                        }}
+                                    />
+                                </View>
+                            ),
+                        }}
+                    />
+                </>
+            ) : (
+                <></>
+            )}
             <Tab.Screen
                 name='Message'
                 component={Message}

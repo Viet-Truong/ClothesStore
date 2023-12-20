@@ -8,6 +8,7 @@ import SendToken from './SendToken';
 import ChangePassword from './ChangePassword';
 import ProductDetail from './ProductDetail';
 import AddProduct from './AddProduct';
+import Category from './Category';
 export {
     Login,
     Welcome,
@@ -19,4 +20,5 @@ export {
     Cart,
     ProductDetail,
     AddProduct,
+    Category,
 };

@@ -469,11 +469,13 @@ export default function AddProduct() {
                         >
                             Danh sách hình ảnh
                         </Text>
-                        <FlatList
-                            data={images}
-                            renderItem={renderItem}
-                            showsHorizontalScrollIndicator={false}
-                        />
+                        <ScrollView horizontal={true} style={{ width: '100%' }}>
+                            <FlatList
+                                data={images}
+                                renderItem={renderItem}
+                                showsHorizontalScrollIndicator={false}
+                            />
+                        </ScrollView>
                     </View>
 
                     <Button

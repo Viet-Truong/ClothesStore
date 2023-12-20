@@ -10,6 +10,7 @@ import {
     Cart,
     ProductDetail,
     AddProduct,
+    Category,
 } from '../screens';
 import BottomNavigator from '../navigation/BottomNavigator';
 
@@ -17,7 +18,7 @@ const Stack = createNativeStackNavigator();
 
 const AuthNavigator = () => {
     return (
-        <Stack.Navigator initialRouteName='AddProduct'>
+        <Stack.Navigator initialRouteName='Category'>
             <Stack.Screen
                 name='Welcome'
                 component={Welcome}
@@ -87,6 +88,11 @@ const AuthNavigator = () => {
                 options={{
                     headerShown: false,
                 }}
+            />
+            <Stack.Screen
+                name='Category'
+                component={Category}
+                options={{ headerShown: false }}
             />
         </Stack.Navigator>
     );
