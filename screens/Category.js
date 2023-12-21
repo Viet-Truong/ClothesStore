@@ -10,9 +10,10 @@ import * as CategoriesService from '../api/categoriesService';
 
 export default function Category() {
     const [category, setCategory] = useState('');
+    const [categoryUpdated, setCategoryUpdated] = useState('');
     const [categories, setCategories] = useState([]);
-    const saveCategory = (category) => {};
-    const updateCategory = (category) => {};
+    const [editingId, setEditingId] = useState(null);
+    // Add
     const handleAddCategory = async () => {
         const res = await CategoriesService.addCategory(category);
         if (res.type === 'success') {
@@ -22,6 +23,23 @@ export default function Category() {
             alert('Có lỗi xảy ra');
         }
     };
+    // Update
+    const handleEditClick = (id, category) => {
+        setCategoryUpdated(category);
+        setEditingId(id);
+    };
+
+    const handleSaveClick = async (id) => {
+        const res = await CategoriesService.updateCategory(id, categoryUpdated);
+        if (res.type === 'success') {
+            setCategories(res.data);
+            alert('Sua danh muc thanh cong');
+            setEditingId(null);
+        } else {
+            alert('co loi xay ra');
+        }
+    };
+
     useEffect(() => {
         const fetch = async () => {
             const res = await CategoriesService.showCategory();
@@ -96,7 +114,7 @@ export default function Category() {
                         style={{
                             fontSize: 18,
                             fontWeight: 'bold',
-                            marginVertical: 24,
+                            marginTop: 24,
                             color: COLORS.black,
                         }}
                     >
@@ -111,20 +129,47 @@ export default function Category() {
                                     flexDirection: 'row',
                                     alignItems: 'center',
                                     justifyContent: 'space-between',
-                                    marginBottom: '24',
+                                    marginVertical: 8,
                                 }}
                             >
-                                <Text>{item.name_category}</Text>
+                                {editingId === item.id ? (
+                                    <TextInput
+                                        style={{
+                                            borderWidth: 1,
+                                            flex: 1,
+                                            marginRight: 10,
+                                            padding: 4,
+                                            borderColor: '#ccc',
+                                        }}
+                                        value={categoryUpdated}
+                                        onChangeText={(newText) => {
+                                            setCategoryUpdated(newText);
+                                        }}
+                                    />
+                                ) : (
+                                    <Text>{item.name_category}</Text>
+                                )}
                                 <View style={{ flexDirection: 'row' }}>
                                     <EvilIcons
                                         name='pencil'
-                                        size={24}
-                                        onPress={() => updateCategory(item.id)}
+                                        size={28}
+                                        style={{ marginRight: 10 }}
+                                        onPress={() =>
+                                            handleEditClick(
+                                                item.id,
+                                                item.name_category
+                                            )
+                                        }
                                     />
                                     <AntDesign
                                         name='save'
-                                        size={24}
-                                        onPress={() => saveCategory(item.id)}
+                                        size={28}
+                                        onPress={() =>
+                                            handleSaveClick(
+                                                item.id,
+                                                categoryUpdated
+                                            )
+                                        }
                                     />
                                 </View>
                             </View>
