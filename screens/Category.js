@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { View, Text, TextInput, FlatList } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
@@ -6,15 +6,34 @@ import { EvilIcons } from '@expo/vector-icons';
 
 import COLORS from '../constants/colors';
 import Button from '../components/Button';
+import * as CategoriesService from '../api/categoriesService';
 
 export default function Category() {
     const [category, setCategory] = useState('');
-    const [categories, setCategories] = useState([
-        1123123123, 21231231231, 3121313123, 1123123123, 21231231231,
-    ]);
+    const [categories, setCategories] = useState([]);
     const saveCategory = (category) => {};
     const updateCategory = (category) => {};
-    const handleAddCategory = () => {};
+    const handleAddCategory = async () => {
+        const res = await CategoriesService.addCategory(category);
+        if (res.type === 'success') {
+            alert('Thêm danh mục thành công');
+            setCategory('');
+        } else {
+            alert('Có lỗi xảy ra');
+        }
+    };
+    useEffect(() => {
+        const fetch = async () => {
+            const res = await CategoriesService.showCategory();
+            if (res.type === 'success') {
+                setCategories(res.data.data);
+            } else {
+                alert('Có lỗi xảy ra');
+            }
+        };
+
+        fetch();
+    }, [category]);
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
             <View style={{ flex: 1, marginHorizontal: 22 }}>
@@ -95,17 +114,17 @@ export default function Category() {
                                     marginBottom: '24',
                                 }}
                             >
-                                <Text>{item}</Text>
+                                <Text>{item.name_category}</Text>
                                 <View style={{ flexDirection: 'row' }}>
                                     <EvilIcons
                                         name='pencil'
                                         size={24}
-                                        onPress={() => updateCategory(item)}
+                                        onPress={() => updateCategory(item.id)}
                                     />
                                     <AntDesign
                                         name='save'
                                         size={24}
-                                        onPress={() => saveCategory(item)}
+                                        onPress={() => saveCategory(item.id)}
                                     />
                                 </View>
                             </View>
