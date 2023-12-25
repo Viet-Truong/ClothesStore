@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext, useRef } from 'react';
 import {
     View,
     Text,
@@ -19,6 +19,9 @@ import * as FileSystem from 'expo-file-system';
 
 import COLORS from '../constants/colors';
 import Button from '../components/Button';
+import * as CategoriesService from '../api/categoriesService';
+import { AuthContext } from './../context/AuthContext';
+import * as ProductsService from '../api/productsService';
 
 const imgDir = FileSystem.documentDirectory + 'images/';
 
@@ -29,18 +32,31 @@ const ensureDirExists = async () => {
     }
 };
 export default function AddProduct() {
-    const [name, setname] = useState('');
+    const [name, setName] = useState('');
     const [price, setPrice] = useState('');
     const [quantity, setQuantity] = useState('');
     const [description, setDescription] = useState('');
     const [size, setSize] = useState('');
     const [color, setColor] = useState('');
     const [category, setCategory] = useState('');
+    const [categories, setCategories] = useState([]);
     const [images, setImages] = useState([]);
+    const { auth } = useContext(AuthContext);
+    const formDataRef = useRef(new FormData());
 
     useEffect(() => {
         loadImages();
+        getCategories();
     }, []);
+
+    const getCategories = async () => {
+        const res = await CategoriesService.showCategory();
+        if (res.type === 'success') {
+            setCategories(res.data.data.map((item) => item.name_category));
+        } else {
+            alert('Có lỗi xảy ra');
+        }
+    };
 
     // Load images from file system
     const loadImages = async () => {
@@ -88,6 +104,41 @@ export default function AddProduct() {
         setImages([...images, dest]);
     };
 
+    function formDataToJSON(formData) {
+        const json = {};
+        for (const [key, value] of formData.entries()) {
+            json[key] = value;
+        }
+        return json;
+    }
+
+    const handleAddProduct = async () => {
+        await ensureDirExists();
+        const files = await FileSystem.readDirectoryAsync(imgDir);
+        for (let i = 0; i < files.length; i++) {
+            formDataRef.current.append('images[]', files[i]);
+        }
+        formDataRef.current.append('shop_id', auth);
+        formDataRef.current.append('name', name);
+        formDataRef.current.append('price', price);
+        formDataRef.current.append('description', description);
+        formDataRef.current.append('category', category);
+
+        // console.log(formDataToJSON(formDataRef.current));
+        const fetchData = async () => {
+            const result = await ProductsService.addProduct(
+                formDataRef.current
+            );
+            // if (result.status === 'success') {
+            //     alert('Thành công');
+            // } else {
+            //     alert('Thất bại');
+            // }
+        };
+
+        fetchData();
+    };
+
     // Render image list item
     const renderItem = ({ item }) => {
         const filename = item.split('/').pop();
@@ -114,7 +165,6 @@ export default function AddProduct() {
         );
     };
 
-    const handleAddProduct = () => {};
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
             <ScrollView>
@@ -174,7 +224,7 @@ export default function AddProduct() {
                                 placeholderTextColor={COLORS.black}
                                 keyboardType='default'
                                 value={name}
-                                onChangeText={(newText) => setname(newText)}
+                                onChangeText={(newText) => setName(newText)}
                                 style={{
                                     width: '100%',
                                 }}
@@ -384,7 +434,7 @@ export default function AddProduct() {
                             }}
                         >
                             <SelectDropdown
-                                data={['Quần', 'Áo thun', 'Áo khoác']}
+                                data={categories}
                                 defaultButtonText={'Danh mục'}
                                 onSelect={(selectedItem, index) => {
                                     setCategory(selectedItem);
