@@ -1,5 +1,16 @@
 import * as request from '../utils/request';
 
+export const getAllProduct = async (q) => {
+    try {
+        const res = await request.get('getAllProduct', {
+            q,
+        });
+        return res;
+    } catch (e) {
+        console.log(e);
+    }
+};
+
 export const showProducts = async () => {
     try {
         const products = await request.get('products'); // Gọi API endpoint để lấy danh sách sản phẩm
@@ -26,7 +37,6 @@ export const showCategories = async () => {
     }
 };
 
-
 export const showProductDetail = async (productId) => {
     try {
         const productDetail = await request.get(`products/${productId}`); // Gửi yêu cầu API để lấy thông tin chi tiết sản phẩm dựa trên productId
@@ -50,5 +60,18 @@ export const showProductsByCategoryId = async (categoryId) => {
     } catch (error) {
         console.error(error);
         return null; // Trả về null hoặc xử lý lỗi theo yêu cầu của bạn
+    }
+};
+
+export const addProduct = async (formData) => {
+    try {
+        const res = await request.post('addProduct', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
+        return res;
+    } catch (err) {
+        console.log(err);
     }
 };

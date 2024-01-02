@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext, useRef } from 'react';
 import {
     View,
     Text,
@@ -19,6 +19,9 @@ import * as FileSystem from 'expo-file-system';
 
 import COLORS from '../constants/colors';
 import Button from '../components/Button';
+import * as CategoriesService from '../api/categoriesService';
+import { AuthContext } from './../context/AuthContext';
+import * as ProductsService from '../api/productsService';
 
 const imgDir = FileSystem.documentDirectory + 'images/';
 
@@ -28,19 +31,31 @@ const ensureDirExists = async () => {
         await FileSystem.makeDirectoryAsync(imgDir, { intermediates: true });
     }
 };
-export default function AddProduct() {
-    const [name, setname] = useState('');
+export default function AddProduct({ navigation }) {
+    const [name, setName] = useState('');
     const [price, setPrice] = useState('');
     const [quantity, setQuantity] = useState('');
     const [description, setDescription] = useState('');
-    const [size, setSize] = useState('');
-    const [color, setColor] = useState('');
     const [category, setCategory] = useState('');
+    const [categories, setCategories] = useState([]);
     const [images, setImages] = useState([]);
+    const [selectedImages, setSelectedImages] = useState([]);
+    const { auth } = useContext(AuthContext);
+    const formDataRef = useRef(new FormData());
 
     useEffect(() => {
         loadImages();
+        getCategories();
     }, []);
+
+    const getCategories = async () => {
+        const res = await CategoriesService.showCategory();
+        if (res.type === 'success') {
+            setCategories(res.data.data.map((item) => item.name_category));
+        } else {
+            alert('Có lỗi xảy ra');
+        }
+    };
 
     // Load images from file system
     const loadImages = async () => {
@@ -63,13 +78,23 @@ export default function AddProduct() {
 
         if (useLibrary) {
             result = await ImagePicker.launchImageLibraryAsync(options);
+            console.log(result);
         } else {
             await ImagePicker.requestCameraPermissionsAsync();
             result = await ImagePicker.launchCameraAsync(options);
         }
         // Save image if not cancelled
         if (!result.canceled) {
-            saveImage(result.assets[0].uri);
+            const imageUri = result.assets[0].uri;
+            saveImage(imageUri);
+            const imageContent = await FileSystem.readAsStringAsync(imageUri, {
+                encoding: FileSystem.EncodingType.Base64,
+            });
+            // Add the selected image to the array
+            setSelectedImages([
+                ...selectedImages,
+                { uri: imageUri, base64: imageContent },
+            ]);
         }
     };
 
@@ -86,6 +111,51 @@ export default function AddProduct() {
         const dest = imgDir + filename;
         await FileSystem.copyAsync({ from: uri, to: dest });
         setImages([...images, dest]);
+    };
+
+    function formDataToJSON(formData) {
+        const json = {};
+        for (const [key, value] of formData.entries()) {
+            json[key] = value;
+        }
+        return json;
+    }
+
+    const handleAddProduct = async () => {
+        try {
+            selectedImages.forEach((image, index) => {
+                formDataRef.current.append(`images[${index}]`, {
+                    uri: image.uri,
+                    type: 'image/jpeg',
+                    name: `image_${index}.jpg`,
+                });
+            });
+            formDataRef.current.append('shop_id', 2);
+            formDataRef.current.append('name', name);
+            formDataRef.current.append('price', price);
+            formDataRef.current.append('quantity', quantity);
+            formDataRef.current.append('description', description);
+            formDataRef.current.append('category', category);
+
+            const fetchData = async () => {
+                const result = await ProductsService.addProduct(
+                    formDataRef.current
+                );
+                if (result.status === 'success') {
+                    await Promise.all(
+                        selectedImages.map(async (image) => {
+                            await FileSystem.deleteAsync(image.uri);
+                        })
+                    );
+                    alert('Thành công');
+                } else {
+                    alert('Thất bại');
+                }
+            };
+            fetchData();
+        } catch (err) {
+            alert('Đã xảy ra lỗi khi thêm sản phẩm');
+        }
     };
 
     // Render image list item
@@ -114,7 +184,6 @@ export default function AddProduct() {
         );
     };
 
-    const handleAddProduct = () => {};
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
             <ScrollView>
@@ -174,7 +243,7 @@ export default function AddProduct() {
                                 placeholderTextColor={COLORS.black}
                                 keyboardType='default'
                                 value={name}
-                                onChangeText={(newText) => setname(newText)}
+                                onChangeText={(newText) => setName(newText)}
                                 style={{
                                     width: '100%',
                                 }}
@@ -301,80 +370,6 @@ export default function AddProduct() {
                                 marginVertical: 8,
                             }}
                         >
-                            Kích cỡ
-                        </Text>
-
-                        <View
-                            style={{
-                                width: '100%',
-                                height: 48,
-                                borderColor: COLORS.black,
-                                borderWidth: 1,
-                                borderRadius: 8,
-                                alignItems: 'center',
-                                flexDirection: 'row',
-                                justifyContent: 'space-between',
-                                paddingLeft: 22,
-                            }}
-                        >
-                            <TextInput
-                                placeholder='VD: S, M, L, ...'
-                                placeholderTextColor={COLORS.black}
-                                keyboardType='default'
-                                value={size}
-                                onChangeText={(newText) => setSize(newText)}
-                                style={{
-                                    width: '100%',
-                                }}
-                            />
-                        </View>
-                    </View>
-
-                    <View style={{ marginBottom: 4 }}>
-                        <Text
-                            style={{
-                                fontSize: 16,
-                                fontWeight: 400,
-                                marginVertical: 8,
-                            }}
-                        >
-                            Màu sắc
-                        </Text>
-
-                        <View
-                            style={{
-                                width: '100%',
-                                height: 48,
-                                borderColor: COLORS.black,
-                                borderWidth: 1,
-                                borderRadius: 8,
-                                alignItems: 'center',
-                                flexDirection: 'row',
-                                justifyContent: 'space-between',
-                                paddingLeft: 22,
-                            }}
-                        >
-                            <TextInput
-                                placeholder='VD: Xanh, đen, ...'
-                                placeholderTextColor={COLORS.black}
-                                keyboardType='default'
-                                value={color}
-                                onChangeText={(newText) => setColor(newText)}
-                                style={{
-                                    width: '100%',
-                                }}
-                            />
-                        </View>
-                    </View>
-
-                    <View style={{ marginBottom: 4 }}>
-                        <Text
-                            style={{
-                                fontSize: 16,
-                                fontWeight: 400,
-                                marginVertical: 8,
-                            }}
-                        >
                             Danh mục
                         </Text>
                         <View
@@ -384,7 +379,7 @@ export default function AddProduct() {
                             }}
                         >
                             <SelectDropdown
-                                data={['Quần', 'Áo thun', 'Áo khoác']}
+                                data={categories}
                                 defaultButtonText={'Danh mục'}
                                 onSelect={(selectedItem, index) => {
                                     setCategory(selectedItem);

@@ -13,6 +13,7 @@ import {
     Category,
 } from '../screens';
 import BottomNavigator from '../navigation/BottomNavigator';
+import Product from '../screens/Product';
 
 const Stack = createNativeStackNavigator();
 
