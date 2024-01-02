@@ -1,5 +1,16 @@
 import * as request from '../utils/request';
 
+export const getAllProduct = async (q) => {
+    try {
+        const res = await request.get('getAllProduct', {
+            q,
+        });
+        return res;
+    } catch (e) {
+        console.log(e);
+    }
+};
+
 export const showProducts = async () => {
     try {
         const products = await request.get('products'); // Gọi API endpoint để lấy danh sách sản phẩm

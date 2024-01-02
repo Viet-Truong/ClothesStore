@@ -6,12 +6,11 @@ import Icon from 'react-native-vector-icons/Ionicons';
 
 import COLORS from '../constants/colors';
 import Home from '../screens/Home';
-import Notification from '../screens/Notification';
 import Message from '../screens/Message';
 import User from '../screens/User';
-import AddProduct from '../screens/AddProduct';
 import Category from '../screens/Category';
 import { AuthContext } from '../context/AuthContext';
+import Product from './../screens/Product';
 
 const Tab = createBottomTabNavigator();
 
@@ -55,8 +54,8 @@ function SellerNavigator() {
                 }}
             />
             <Tab.Screen
-                name='AddProduct'
-                component={AddProduct}
+                name='Product'
+                component={Product}
                 options={{
                     tabBarShowLabel: false,
                     tabBarIcon: ({ focused }) => (
@@ -132,38 +131,6 @@ function SellerNavigator() {
                                     focused
                                         ? 'notifications'
                                         : 'notifications-outline'
-                                }
-                                size={22}
-                                color={
-                                    focused ? COLORS.secondary : COLORS.black
-                                }
-                                style={{
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                }}
-                            />
-                        </View>
-                    ),
-                }}
-            />
-            <Tab.Screen
-                name='Notification'
-                component={Notification}
-                options={{
-                    tabBarShowLabel: false,
-                    tabBarIcon: ({ focused }) => (
-                        <View
-                            style={
-                                focused
-                                    ? styles.viewIconActive
-                                    : styles.viewIconNoneActive
-                            }
-                        >
-                            <Icon
-                                name={
-                                    focused
-                                        ? 'chatbubble-ellipses'
-                                        : 'chatbubble-ellipses-outline'
                                 }
                                 size={22}
                                 color={
