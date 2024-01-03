@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     View,
     Text,
@@ -11,6 +11,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 
 import * as ProductsService from '../api/productsService';
+import ListProduct from '../components/ListProduct';
 
 export default function Product({ navigation }) {
     const [products, setProducts] = useState([]);
@@ -21,30 +22,11 @@ export default function Product({ navigation }) {
 
     const fetch = async () => {
         const result = await ProductsService.getAllProduct();
-        setProducts(result);
+        setProducts(result.data);
     };
 
-    const renderProductItem = ({ item }) => (
-        <View style={styles.productItemContainer}>
-            <TouchableOpacity
-                onPress={() =>
-                    navigation.navigate('ProductDetail', {
-                        productId: item.product_id,
-                    })
-                }
-            >
-                <View style={styles.productItem}>
-                    <Image
-                        source={{ uri: item.images[0] }}
-                        style={styles.productImage}
-                    />
-                    <Text style={styles.productTitle}>{item.name}</Text>
-                </View>
-            </TouchableOpacity>
-        </View>
-    );
     return (
-        <SafeAreaView>
+        <SafeAreaView style={[{ width: '100%', height: '100%' }]}>
             <View style={styles.header}>
                 <Text style={{ fontWeight: 'bold' }}>Danh sách sản phẩm</Text>
                 <TouchableOpacity
@@ -57,13 +39,21 @@ export default function Product({ navigation }) {
                     />
                 </TouchableOpacity>
             </View>
-            <View style={{ flex: 1 }}>
+            <View
+                style={{
+                    flex: 1,
+                    width: '100%',
+                    height: '100%',
+                }}
+            >
                 <FlatList
-                    style={[{ textAlign: 'center ' }]}
+                    style={[{ textAlign: 'center', grow: '1' }]}
                     data={products}
                     keyExtractor={(item) => item.product_id.toString()}
                     numColumns={2}
-                    renderItem={renderProductItem}
+                    renderItem={({ item }) => (
+                        <ListProduct item={item}></ListProduct>
+                    )}
                 />
             </View>
         </SafeAreaView>

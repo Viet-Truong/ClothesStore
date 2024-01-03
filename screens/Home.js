@@ -6,93 +6,36 @@ import {
     TextInput,
     FlatList,
     Image,
-    Pressable,
     StyleSheet,
     TouchableOpacity,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import {
-    showProducts,
-    showCategories,
-    showProductsByCategoryId,
-} from '../api/productsService'; // Import hàm lấy dữ liệu từ service
+
+import * as CategoriesService from '../api/categoriesService';
+import * as ProductsService from '../api/productsService';
+import ListProduct from '../components/ListProduct';
 import { AuthContext } from '../context/AuthContext';
 
 export default function Home({ navigation }) {
     const [products, setProducts] = useState([]);
     const [categories, setCategories] = useState([]);
     const [currentCategoryId, setCurrentCategoryId] = useState(null);
-    const { auth } = useContext(AuthContext); // Thêm state để lưu ID danh mục hiện tại
+    const { auth } = useContext(AuthContext);
 
     useEffect(() => {
-        fetchData(); // Gọi hàm fetchData để lấy danh sách sản phẩm và danh mục khi component được mount
-
-        // Cleanup function for when the component unmounts
-        return () => {
-            // Perform cleanup here if necessary
-        };
+        fetchData();
     }, []);
 
     const fetchData = async () => {
-        // Lấy danh sách sản phẩm từ API
-        const productsData = await showProducts();
-        if (productsData) {
-            setProducts(productsData);
-        }
+        const result = await ProductsService.getAllProduct();
+        setProducts(result.data);
 
-        // Lấy danh sách danh mục từ API
-        const categoriesData = await showCategories();
-        if (categoriesData) {
-            setCategories(categoriesData);
+        const res = await CategoriesService.showCategory();
+        if (res) {
+            setCategories(res.data.data);
         }
     };
-
-    const handleCategoryPress = async (categoryId) => {
-        // Nếu đã click vào danh mục trước đó, lấy sản phẩm theo danh mục
-        if (categoryId !== currentCategoryId) {
-            const productsByCategory = await showProductsByCategoryId(
-                categoryId
-            );
-            if (productsByCategory) {
-                setProducts(productsByCategory);
-                setCurrentCategoryId(categoryId); // Cập nhật ID danh mục hiện tại
-            }
-        } else {
-            // Nếu click lại vào cùng một danh mục, hiển thị tất cả sản phẩm
-            fetchData();
-            setCurrentCategoryId(null); // Đặt ID danh mục hiện tại về null để hiển thị tất cả sản phẩm
-        }
-    };
-
-    const renderProductItem = ({ item }) => (
-        <View style={styles.productItemContainer}>
-            <TouchableOpacity
-                onPress={() =>
-                    navigation.navigate('ProductDetail', { productId: item.id })
-                }
-            >
-                <View style={styles.productItem}>
-                    <Image
-                        source={{ uri: item.img }}
-                        style={styles.productImage}
-                    />
-                    <Text style={styles.productTitle}>{item.name}</Text>
-                </View>
-            </TouchableOpacity>
-        </View>
-    );
-
-    const renderCategoryItem = ({ item }) => (
-        <View style={styles.CategoryItemContainer}>
-            <View style={styles.categoryItem}>
-                <Image
-                    source={{ uri: item.img }}
-                    style={styles.categoryImage}
-                />
-                <Text>{item.name}</Text>
-            </View>
-        </View>
-    );
+    console.log(categories);
 
     return (
         <SafeAreaView style={styles.container}>
@@ -119,7 +62,7 @@ export default function Home({ navigation }) {
             </View>
 
             {/* Categories */}
-            <View style={{ height: 150, marginTop: 10 }}>
+            <View style={{ height: 80, marginTop: 10, marginHorizontal: 20 }}>
                 <FlatList
                     horizontal
                     showsHorizontalScrollIndicator={false}
@@ -130,12 +73,8 @@ export default function Home({ navigation }) {
                             onPress={() => handleCategoryPress(item.id)}
                         >
                             <View style={styles.categoryItem}>
-                                <Image
-                                    source={{ uri: item.img }}
-                                    style={styles.categoryImage}
-                                />
                                 <Text style={styles.categoryText}>
-                                    {item.name}
+                                    {item.name_category}
                                 </Text>
                             </View>
                         </TouchableOpacity>
@@ -144,16 +83,21 @@ export default function Home({ navigation }) {
             </View>
 
             {/* Products */}
-            <View style={{ flex: 1 }}>
-                <Text style={[styles.sectionTitle, { textAlign: 'center' }]}>
-                    {currentCategoryId ? 'Filtered Products' : 'All Products'}
-                </Text>
+            <View
+                style={{
+                    flex: 1,
+                    width: '100%',
+                    height: '100%',
+                }}
+            >
                 <FlatList
-                    style={[{ textAlign: 'center ' }]}
-                    data={products.data}
-                    keyExtractor={(item) => item.id.toString()}
+                    style={[{ textAlign: 'center', grow: '1' }]}
+                    data={products}
+                    keyExtractor={(item) => item.product_id.toString()}
                     numColumns={2}
-                    renderItem={renderProductItem}
+                    renderItem={({ item }) => (
+                        <ListProduct item={item}></ListProduct>
+                    )}
                 />
             </View>
         </SafeAreaView>
@@ -192,7 +136,7 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        margin: 10,
+        marginTop: 10,
     },
     categoryItem: {
         margin: 10,

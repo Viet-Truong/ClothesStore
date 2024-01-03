@@ -78,7 +78,6 @@ export default function AddProduct({ navigation }) {
 
         if (useLibrary) {
             result = await ImagePicker.launchImageLibraryAsync(options);
-            console.log(result);
         } else {
             await ImagePicker.requestCameraPermissionsAsync();
             result = await ImagePicker.launchCameraAsync(options);
@@ -148,6 +147,7 @@ export default function AddProduct({ navigation }) {
                         })
                     );
                     alert('Thành công');
+                    navigation.navigate('Product');
                 } else {
                     alert('Thất bại');
                 }

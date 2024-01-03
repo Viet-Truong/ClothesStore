@@ -17,7 +17,6 @@ const Tab = createBottomTabNavigator();
 function SellerNavigator() {
     const { auth } = useContext(AuthContext);
     const role = auth.data.role;
-    console.log(role);
     return (
         <Tab.Navigator
             screenOptions={{

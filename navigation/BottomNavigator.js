@@ -14,7 +14,6 @@ const Tab = createBottomTabNavigator();
 function BottomNavigator() {
     const { auth } = useContext(AuthContext);
     const role = auth.data.role;
-    console.log(role);
     return role === 'Người bán hàng' ? (
         <SellerNavigator></SellerNavigator>
     ) : (
