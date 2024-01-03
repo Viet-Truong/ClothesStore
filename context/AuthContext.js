@@ -25,11 +25,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     const isLoggedIn = async () => {
-        // let user = await AsyncStorage.getItem('auth');
-        // console.log(user);
         if (auth.data !== null) {
-            // user = JSON.parse(user);
-            // setAuth(user);
             return true;
         }
         return false;

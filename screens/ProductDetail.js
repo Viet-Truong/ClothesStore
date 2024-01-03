@@ -24,7 +24,6 @@ const ProductDetail = ({ route }) => {
     const handleIncrease = () => {
         setQuantity((prevQuantity) => prevQuantity + 1);
         setPrice((prevPrice) => prevPrice * (quantity + 1));
-        console.log(price);
     };
 
     const handleDecrease = () => {
