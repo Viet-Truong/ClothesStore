@@ -129,7 +129,7 @@ export default function AddProduct({ navigation }) {
                     name: `image_${index}.jpg`,
                 });
             });
-            formDataRef.current.append('shop_id', 2);
+            formDataRef.current.append('shop_id', auth.data.id);
             formDataRef.current.append('name', name);
             formDataRef.current.append('price', price);
             formDataRef.current.append('quantity', quantity);
@@ -141,11 +141,13 @@ export default function AddProduct({ navigation }) {
                     formDataRef.current
                 );
                 if (result.status === 'success') {
-                    await Promise.all(
-                        selectedImages.map(async (image) => {
-                            await FileSystem.deleteAsync(image.uri);
-                        })
-                    );
+                    const files = await FileSystem.readDirectoryAsync(imgDir);
+                    const deletePromises = files.map(async (fileName) => {
+                        const filePath = `${imgDir}${fileName}`;
+                        await FileSystem.deleteAsync(filePath);
+                    });
+                    await Promise.all(deletePromises);
+
                     alert('Thành công');
                     navigation.navigate('Product');
                 } else {
