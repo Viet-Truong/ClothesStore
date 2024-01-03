@@ -9,21 +9,24 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
+import { useIsFocused } from '@react-navigation/native';
 
 import * as ProductsService from '../api/productsService';
 import ListProduct from '../components/ListProduct';
 
 export default function Product({ navigation }) {
+    const isFocused = useIsFocused();
     const [products, setProducts] = useState([]);
 
     useEffect(() => {
-        fetch();
-    }, []);
-
-    const fetch = async () => {
-        const result = await ProductsService.getAllProduct();
-        setProducts(result.data);
-    };
+        const fetch = async () => {
+            const result = await ProductsService.getAllProduct();
+            setProducts(result.data);
+        };
+        if (isFocused) {
+            fetch();
+        }
+    }, [isFocused]);
 
     return (
         <SafeAreaView style={[{ width: '100%', height: '100%' }]}>
